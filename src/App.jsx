@@ -1,10 +1,40 @@
+// ASSETS
+
+// STYLES
 import "./App.css";
 
+// LIBRARIES
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+// MISC
+
+// COMPONENTS
+import Layout from "./layouts/MainLayout";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
+// CONFIGURATION
 function App() {
+  // PROPERTIES
+
+  // API REQUESTS
+
+  // LIBRARY CONSTANTS
+
+  // STATE CONSTANTS
+
+  // LIFE CYCLE
+
+  // EVENT HANDLERS
   return (
-    <div className="h-screen flex items-center justify-center bg-black">
-      <h1 className="text-white text-3xl">Tailwind works 🚀</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
