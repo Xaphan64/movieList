@@ -3,6 +3,7 @@
 // STYLES
 
 // LIBRARIES
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 // MISC
@@ -18,18 +19,19 @@ export default function Layout() {
   // LIBRARY CONSTANTS
 
   // STATE CONSTANTS
+  const [nightmode, setNightmode] = useState(false);
 
   // LIFE CYCLE
 
   // EVENT HANDLERS
   function handleNightMode() {
-    console.log(`nightmode clicked`);
+    setNightmode((prev) => !prev);
   }
 
   return (
-    <div>
-      <button type="button" onClick={handleNightMode} className="p-1">
-        nightmode
+    <div className="flex flex-col w-full">
+      <button type="button" onClick={handleNightMode} className="self-end p-2">
+        {nightmode ? "☀️" : "🌙"}
       </button>
 
       <Outlet />
