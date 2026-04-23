@@ -9,7 +9,7 @@
 // COMPONENTS
 
 // CONFIGURATION
-export default function Login({ nightmode }) {
+export default function Login() {
   // PROPERTIES
 
   // API REQUESTS
@@ -23,8 +23,6 @@ export default function Login({ nightmode }) {
   // EVENT HANDLERS
   function handleLogin(e) {
     e.preventDefault();
-
-    console.log(nightmode);
   }
 
   return (
@@ -32,9 +30,9 @@ export default function Login({ nightmode }) {
       <h1>login page</h1>
 
       <form className="flex-col" onSubmit={handleLogin}>
-        <input type="text" placeholder="email" />
+        <input type="text" placeholder="email" className="text-light-text dark:text-dark-text" />
 
-        <input type="password" placeholder="password" />
+        <input type="password" placeholder="password" className="text-light-text dark:text-dark-text" />
 
         <button type="submit">login</button>
       </form>
