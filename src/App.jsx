@@ -12,6 +12,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./layouts/MainLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import MainPage from "./pages/MainPage";
 
 // CONFIGURATION
 function App() {
@@ -30,7 +31,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Login />} />
+          <Route index element={<MainPage />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
       </Routes>

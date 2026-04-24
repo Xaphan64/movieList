@@ -6,7 +6,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 // LIBRARIES
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 // MISC
 
@@ -31,14 +31,21 @@ export default function Layout() {
 
   return (
     <div className={nightMode ? "dark" : ""}>
-      <div className="flex flex-col w-full min-h-screen p-2 duration-600 light-bg text-light-text dark:bg-dark-bg dark:text-dark-text">
-        <button
-          type="button"
-          onClick={handleNightMode}
-          className="flex self-end p-2 text-2xl cursor-pointer transition-colors duration-300 rounded hover:bg-light-border dark:hover:bg-dark-border"
-        >
-          {nightMode ? <LightModeIcon /> : <DarkModeIcon />}
-        </button>
+      <div
+        className="flex flex-col w-full min-h-screen p-2 duration-600 light-bg text-light-text 
+        dark:bg-dark-bg dark:text-dark-text"
+      >
+        <div className="flex flex-row justify-around">
+          <Link to="/">app name</Link>
+          <button
+            type="button"
+            onClick={handleNightMode}
+            className="flex self-end p-2 text-2xl cursor-pointer transition-colors duration-300 rounded 
+          hover:bg-light-border dark:hover:bg-dark-border"
+          >
+            {nightMode ? <LightModeIcon /> : <DarkModeIcon />}
+          </button>
+        </div>
 
         <Outlet />
       </div>
