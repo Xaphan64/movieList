@@ -1,7 +1,6 @@
 // ASSETS
 
 // STYLES
-import "./App.css";
 
 // LIBRARIES
 import { BrowserRouter, Route, Routes } from "react-router-dom";

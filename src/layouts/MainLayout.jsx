@@ -21,12 +21,17 @@ export default function Layout() {
   // LIBRARY CONSTANTS
 
   // STATE CONSTANTS
-  const [nightMode, setNightMode] = useState(false);
+  const [nightMode, setNightMode] = useState(() => {
+    // get the default theme from local storage
+    return localStorage.getItem("theme") === "dark";
+  });
 
-  // EVENT HANDLERS
   function handleNightMode() {
     // toggle nightmode on/off
-    setNightMode(!nightMode);
+    const mode = !nightMode;
+    setNightMode(mode);
+    // save mode to local storage
+    localStorage.setItem("theme", mode ? "dark" : "light");
   }
 
   return (
@@ -41,7 +46,7 @@ export default function Layout() {
             type="button"
             onClick={handleNightMode}
             className="flex self-end p-2 text-2xl cursor-pointer transition-colors duration-300 rounded 
-          hover:bg-light-border dark:hover:bg-dark-border"
+            hover:bg-light-border dark:hover:bg-dark-border"
           >
             {nightMode ? <LightModeIcon /> : <DarkModeIcon />}
           </button>
