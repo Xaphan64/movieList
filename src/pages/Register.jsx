@@ -3,12 +3,14 @@
 // STYLES
 
 // LIBRARIES
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 // MISC
 
 // COMPONENTS
+import InputChecker from "../components/InputChecker";
+import { passwordRules, usernameRules } from "../components/inputRules";
 
 // CONFIGURATION
 export default function Register() {
@@ -27,21 +29,15 @@ export default function Register() {
     confirmPassword: "",
   });
 
-  const [error, setError] = useState({
-    username: "",
-    email: "",
-    birthDate: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  // const [errorTest, setErrorTest] = useState("");
+  // const [error, setError] = useState({
+  //   username: "",
+  //   email: "",
+  //   birthDate: "",
+  //   password: "",
+  //   confirmPassword: "",
+  // });
 
   // LIFE CYCLE
-
-  useEffect(() => {
-    console.log("error updated:", error);
-  }, [error]);
 
   // EVENT HANDLERS
   function handleRegister(e) {
@@ -65,7 +61,6 @@ export default function Register() {
     // username empty throw error
     if (input.username.trim() === "") {
       console.log(`username is empty`);
-      setError((prev) => ({ ...prev, username: "Username is empty" }));
     }
     // username too short
     else if (!usernameRegex.test(input.username)) {
@@ -75,7 +70,6 @@ export default function Register() {
     // email empty throw error
     if (input.email.trim() === "") {
       console.log(`email is empty`);
-      setError(`email is empty`);
     }
     // email wrong format throw error
     else if (!emailRegex.test(input.email)) {
@@ -153,7 +147,7 @@ export default function Register() {
           className="text-light-text dark:text-dark-text"
         />
 
-        <p>Username rules (de facut dropdown care se updateaza in timp real)</p>
+        <InputChecker dropdownName="Username" rules={usernameRules} inputText={input.username} />
 
         <input
           type="text"
@@ -183,7 +177,7 @@ export default function Register() {
           className="text-light-text dark:text-dark-text"
         />
 
-        <p>Password rules (de facut dropdown care se updateaza in timp real)</p>
+        <InputChecker dropdownName="Password" rules={passwordRules} inputText={input.password} />
 
         <input
           type="password"
