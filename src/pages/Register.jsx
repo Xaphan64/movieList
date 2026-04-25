@@ -1,10 +1,13 @@
 // ASSETS
+import ErrorIcon from "@mui/icons-material/Error";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import DangerousIcon from "@mui/icons-material/Dangerous";
 
 // STYLES
 
 // LIBRARIES
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
 
 // MISC
 
@@ -19,8 +22,12 @@ export default function Register() {
   // API REQUESTS
 
   // LIBRARY CONSTANTS
+  const navigate = useNavigate();
 
   // STATE CONSTANTS
+  const [userDropdown, setUserDropdown] = useState(false);
+  const [passwordDropdown, setPasswordDropdown] = useState(false);
+  const [error, setError] = useState("");
   const [input, setInput] = useState({
     username: "",
     email: "",
@@ -29,81 +36,93 @@ export default function Register() {
     confirmPassword: "",
   });
 
-  // const [error, setError] = useState({
-  //   username: "",
-  //   email: "",
-  //   birthDate: "",
-  //   password: "",
-  //   confirmPassword: "",
-  // });
-
   // LIFE CYCLE
 
   // EVENT HANDLERS
   function handleRegister(e) {
     e.preventDefault();
 
-    // console.log(input.username, input.email, input.birthDate, input.password, input.confirmPassword);
+    // errors object
+    const newError = {
+      username: "",
+      email: "",
+      birthDate: "",
+      password: "",
+      confirmPassword: "",
+    };
 
-    // console.log(typeof input.birthDate);
-
-    // console.log(`date: ${input.birthDate}`);
-
-    // regex username validation condition
+    // regex validation conditions
     const usernameRegex = /^[A-Za-z][A-Za-z0-9._-]{2,14}$/;
-
-    // regex email validation condition
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-    // password regex condition (min 8 chars at least 1 upper, 1 lower, 1 number and 1 special)
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,16}$/;
 
     // username empty throw error
     if (input.username.trim() === "") {
-      console.log(`username is empty`);
+      newError.username = "Username is empty!";
     }
-    // username too short
+    // if username too short open the dropdown
     else if (!usernameRegex.test(input.username)) {
-      console.log(`name dont respect condition`);
+      setUserDropdown(true);
     }
 
     // email empty throw error
     if (input.email.trim() === "") {
-      console.log(`email is empty`);
+      newError.email = "Email address is empty!";
     }
     // email wrong format throw error
     else if (!emailRegex.test(input.email)) {
-      console.log(`invalid email address`);
+      newError.email = "Invalid email address!";
     }
 
     // birthday empty throw error
     if (input.birthDate.trim() === "") {
-      console.log(`birthday field is empty`);
+      newError.birthDate = "Date of birth is empty!";
     }
     // too young (less 14 years) throw error
     else if (input.birthDate > handleDate(14)) {
-      console.log(`you are too young to make an account`);
+      newError.birthDate = "You are too young to make an account!";
     }
     // too old (more than 100 years) throw error
     else if (input.birthDate < handleDate(100)) {
-      console.log(`invalid date`);
+      newError.birthDate = "Invalid date of birth!";
     }
 
     // password empty throw error
     if (input.password.trim() === "") {
-      console.log(`password is empty`);
+      newError.password = "Set your password!";
     }
-    // password must be at least 1 number, 1 upper, 1 lower and 1 special character error
+    // open dropdown if password is not at least 1 number, 1 upper, 1 lower and 1 special character
     else if (!passwordRegex.test(input.password)) {
-      console.log(`password dont respect condition`);
+      setPasswordDropdown(true);
     }
 
     // confirm password must match with password
     if (input.confirmPassword !== input.password) {
-      console.log(`passwords don't match`);
+      newError.confirmPassword = "Password and confirm password must be the same!";
     }
 
-    // de facut si conditiile de passed form si navigate
+    // set the error
+    setError(newError);
+
+    // validations conditions
+    if (
+      usernameRegex.test(input.username) &&
+      emailRegex.test(input.email) &&
+      input.birthDate < handleDate(14) &&
+      input.birthDate > handleDate(100) &&
+      passwordRegex.test(input.password) &&
+      input.password === input.confirmPassword
+    ) {
+      // save data to local storage
+      localStorage.setItem("Username", input.username);
+      localStorage.setItem("Email", input.email);
+      localStorage.setItem("Birth Date", input.birthDate);
+      localStorage.setItem("Password", input.password);
+      localStorage.setItem("Confirm Password", input.confirmPassword);
+
+      // redirect to login page
+      navigate("/login");
+    }
   }
 
   function handleDate(year) {
@@ -125,11 +144,17 @@ export default function Register() {
     // deconstruct name and value
     const { name, value } = e.target;
 
-    // set the input of the previous state
+    // set the input
     setInput((prev) => ({
       ...prev,
       // use name as a key
       [name]: value,
+    }));
+
+    // remove error when typing into input
+    setError((prev) => ({
+      ...prev,
+      [name]: "",
     }));
   }
 
@@ -137,56 +162,105 @@ export default function Register() {
     <div className="flex flex-col items-center">
       <h1>Create your [APPNAME] account</h1>
 
-      <form className="flex flex-col" onSubmit={handleRegister}>
+      <form className="flex flex-col gap-1" onSubmit={handleRegister}>
         <input
           type="text"
-          placeholder="username"
+          placeholder="Enter your username"
           name="username"
           value={input.username}
           onChange={handleChange}
-          className="text-light-text dark:text-dark-text"
+          className={`text-light-text dark:text-dark-text focus:outline-none focus:ring-0 border 
+          border-light-border dark:border-dark-border ${error.username ? "border-red-600 dark:border-red-400" : ""}`}
         />
 
-        <InputChecker dropdownName="Username" rules={usernameRules} inputText={input.username} />
+        {error.username && (
+          <div className="flex gap-1 items-center text-red-600 dark:text-red-400">
+            <DangerousIcon fontSize="small" />
+            <span>{error.username}</span>
+          </div>
+        )}
+
+        <InputChecker
+          dropdownName="Username"
+          rules={usernameRules}
+          inputText={input.username}
+          status={userDropdown}
+        />
 
         <input
           type="text"
-          placeholder="email"
+          placeholder="Enter your email address"
           name="email"
           value={input.email}
           onChange={handleChange}
-          className="text-light-text dark:text-dark-text"
+          className={`text-light-text dark:text-dark-text focus:outline-none focus:ring-0 border 
+          border-light-border dark:border-dark-border ${error.email ? "border-red-600 dark:border-red-400" : ""}`}
         />
+
+        {error.email && (
+          <div className="flex gap-1 items-center text-red-600 dark:text-red-400">
+            <DangerousIcon fontSize="small" />
+            <span>{error.email}</span>
+          </div>
+        )}
 
         <input
           type="date"
-          placeholder="birthday"
           name="birthDate"
           value={input.birthDate}
           onChange={handleChange}
-          className="text-light-text dark:text-dark-text"
+          className={`text-light-text dark:text-dark-text focus:outline-none focus:ring-0 border 
+          border-light-border dark:border-dark-border ${error.birthDate ? "border-red-600 dark:border-red-400" : ""}`}
           // style={{ colorScheme: "dark" }}
         />
 
+        {error.birthDate && (
+          <div className="flex gap-1 items-center text-red-600 dark:text-red-400">
+            <DangerousIcon fontSize="small" />
+            <span>{error.birthDate}</span>
+          </div>
+        )}
+
         <input
           type="password"
-          placeholder="password"
+          placeholder="Enter your password"
           name="password"
           value={input.password}
           onChange={handleChange}
-          className="text-light-text dark:text-dark-text"
+          className={`text-light-text dark:text-dark-text focus:outline-none focus:ring-0 border 
+          border-light-border dark:border-dark-border ${error.password ? "border-red-600 dark:border-red-400" : ""}`}
         />
 
-        <InputChecker dropdownName="Password" rules={passwordRules} inputText={input.password} />
+        {error.password && (
+          <div className="flex gap-1 items-center text-red-600 dark:text-red-400">
+            <DangerousIcon fontSize="small" />
+            <span>{error.password}</span>
+          </div>
+        )}
+
+        <InputChecker
+          dropdownName="Password"
+          rules={passwordRules}
+          inputText={input.password}
+          status={passwordDropdown}
+        />
 
         <input
           type="password"
-          placeholder="confirmPassword"
+          placeholder="Confirm your password"
           name="confirmPassword"
           value={input.confirmPassword}
           onChange={handleChange}
-          className="text-light-text dark:text-dark-text"
+          className={`text-light-text dark:text-dark-text focus:outline-none focus:ring-0 border 
+          border-light-border dark:border-dark-border ${error.confirmPassword ? "border-red-600 dark:border-red-400" : ""}`}
         />
+
+        {error.confirmPassword && (
+          <div className="flex gap-1 items-center text-red-600 dark:text-red-400">
+            <DangerousIcon fontSize="small" />
+            <span>{error.confirmPassword}</span>
+          </div>
+        )}
 
         <button type="submit">register button</button>
 
