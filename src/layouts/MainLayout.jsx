@@ -35,18 +35,18 @@ export default function Layout() {
   }
 
   return (
-    <div className={nightMode ? "dark" : ""}>
+    <div className={nightMode ? "dark" : "light"}>
       <div
-        className="flex flex-col w-full min-h-screen p-2 duration-600 light-bg text-light-text 
-        dark:bg-dark-bg dark:text-dark-text"
+        className="layout flex flex-col w-full min-h-screen p-2 duration-450 
+        light:bg-light-bg light:text-light-text dark:bg-dark-bg dark:text-dark-text"
       >
-        <div className="flex flex-row justify-around">
-          <Link to="/">app name</Link>
+        <div className="flex flex-row md:justify-around items-center justify-between">
+          <Link to="/">Movielyst</Link>
           <button
             type="button"
             onClick={handleNightMode}
             className="flex self-end p-2 text-2xl cursor-pointer transition-colors duration-300 rounded 
-            hover:bg-light-border dark:hover:bg-dark-border"
+            light:hover:bg-light-border dark:hover:bg-dark-border"
           >
             {nightMode ? <LightModeIcon /> : <DarkModeIcon />}
           </button>

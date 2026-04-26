@@ -2,12 +2,16 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import DangerousIcon from "@mui/icons-material/Dangerous";
+import PersonIcon from "@mui/icons-material/Person";
+import EmailIcon from "@mui/icons-material/Email";
+import LockIcon from "@mui/icons-material/Lock";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 // STYLES
 
 // LIBRARIES
 import { useState } from "react";
-import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // MISC
 
@@ -76,7 +80,7 @@ export default function Register() {
 
     // birthday empty throw error
     if (input.birthDate.trim() === "") {
-      newError.birthDate = "Date of birth is empty!";
+      newError.birthDate = "Complete your date of birth!";
     }
     // too young (less 14 years) throw error
     else if (input.birthDate > handleDate(14)) {
@@ -159,22 +163,34 @@ export default function Register() {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <h1>Create your [APPNAME] account</h1>
+    <div className="flex flex-col items-center gap-4">
+      <h1 className="sm:text-2xl text-xl font-bold">Create your Movielyst account</h1>
 
-      <form className="flex flex-col gap-1" onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="Enter your username"
-          name="username"
-          value={input.username}
-          onChange={handleChange}
-          className={`text-light-text dark:text-dark-text focus:outline-none focus:ring-0 border 
-          border-light-border dark:border-dark-border ${error.username ? "border-red-600 dark:border-red-400" : ""}`}
-        />
+      <form className="flex flex-col sm:gap-2 gap-1" autoComplete="off" onSubmit={handleRegister}>
+        <div className="flex flex-col sm:gap-2 gap-1">
+          <h2 className="font-semibold sm:text-base text-sm">Username</h2>
+          <div className="flex flex-row relative items-center">
+            <input
+              type="text"
+              placeholder="Enter your username"
+              name="username"
+              value={input.username}
+              onChange={handleChange}
+              className={`sm:p-2 w-full sm:px-11 focus:outline-none focus:ring-0 rounded-md sm:border-2 sm:text-lg
+              p-1 border-1 text-sm px-8 light:text-light-text dark:text-dark-text light:border-light-border
+              dark:border-dark-border dark:bg-dark-input-bg dark:focus:border-dark-focus light:focus:border-light-focus
+               ${error.username ? "light:border-light-error dark:border-dark-error" : ""}`}
+            />
+
+            <PersonIcon
+              sx={{ fontSize: { xs: 18, sm: 26, md: 26 } }}
+              className="absolute light:text-light-text dark:text-dark-text sm:left-2 left-1"
+            />
+          </div>
+        </div>
 
         {error.username && (
-          <div className="flex gap-1 items-center text-red-600 dark:text-red-400">
+          <div className="flex gap-1 items-center light:text-light-error dark:text-dark-error sm:text-base text-sm">
             <DangerousIcon fontSize="small" />
             <span>{error.username}</span>
           </div>
@@ -187,52 +203,87 @@ export default function Register() {
           status={userDropdown}
         />
 
-        <input
-          type="text"
-          placeholder="Enter your email address"
-          name="email"
-          value={input.email}
-          onChange={handleChange}
-          className={`text-light-text dark:text-dark-text focus:outline-none focus:ring-0 border 
-          border-light-border dark:border-dark-border ${error.email ? "border-red-600 dark:border-red-400" : ""}`}
-        />
+        <div className="flex flex-col sm:gap-2 gap-1">
+          <h2 className="font-semibold sm:text-base text-sm">Email</h2>
+          <div className="flex flex-row relative items-center">
+            <input
+              type="text"
+              placeholder="Enter your email address"
+              name="email"
+              value={input.email}
+              onChange={handleChange}
+              className={`sm:p-2 w-full sm:px-11 focus:outline-none focus:ring-0 rounded-md sm:border-2 sm:text-lg
+              p-1 border-1 text-sm px-8 light:text-light-text dark:text-dark-text light:border-light-border
+              dark:border-dark-border dark:bg-dark-input-bg dark:focus:border-dark-focus light:focus:border-light-focus
+              ${error.email ? "light:border-light-error dark:border-dark-error" : ""}`}
+            />
+
+            <EmailIcon
+              sx={{ fontSize: { xs: 18, sm: 26, md: 26 } }}
+              className="absolute light:text-light-text dark:text-dark-text sm:left-2 left-1"
+            />
+          </div>
+        </div>
 
         {error.email && (
-          <div className="flex gap-1 items-center text-red-600 dark:text-red-400">
+          <div className="flex gap-1 items-center light:text-light-error dark:text-dark-error sm:text-base text-sm">
             <DangerousIcon fontSize="small" />
             <span>{error.email}</span>
           </div>
         )}
 
-        <input
-          type="date"
-          name="birthDate"
-          value={input.birthDate}
-          onChange={handleChange}
-          className={`text-light-text dark:text-dark-text focus:outline-none focus:ring-0 border 
-          border-light-border dark:border-dark-border ${error.birthDate ? "border-red-600 dark:border-red-400" : ""}`}
-          // style={{ colorScheme: "dark" }}
-        />
+        <div className="flex flex-col sm:gap-2 gap-1">
+          <h2 className="font-semibold sm:text-base text-sm">Date of birth</h2>
+          <div className="flex flex-row relative items-center">
+            <input
+              type="date"
+              name="birthDate"
+              value={input.birthDate}
+              onChange={handleChange}
+              className={`sm:p-2 w-full sm:px-11 focus:outline-none focus:ring-0 rounded-md sm:border-2 sm:text-lg
+              p-1 border-1 text-sm px-8 light:text-light-text dark:text-dark-text light:border-light-border
+              dark:border-dark-border dark:bg-dark-input-bg dark:focus:border-dark-focus light:focus:border-light-focus
+              ${error.birthDate ? "light:border-light-error dark:border-dark-error" : ""}`}
+            />
+
+            <CalendarTodayIcon
+              sx={{ fontSize: { xs: 18, sm: 26, md: 26 } }}
+              className="absolute light:text-light-text dark:text-dark-text sm:left-2 left-1"
+            />
+          </div>
+        </div>
 
         {error.birthDate && (
-          <div className="flex gap-1 items-center text-red-600 dark:text-red-400">
+          <div className="flex gap-1 items-center light:text-light-error dark:text-dark-error sm:text-base text-sm">
             <DangerousIcon fontSize="small" />
             <span>{error.birthDate}</span>
           </div>
         )}
 
-        <input
-          type="password"
-          placeholder="Enter your password"
-          name="password"
-          value={input.password}
-          onChange={handleChange}
-          className={`text-light-text dark:text-dark-text focus:outline-none focus:ring-0 border 
-          border-light-border dark:border-dark-border ${error.password ? "border-red-600 dark:border-red-400" : ""}`}
-        />
+        <div className="flex flex-col sm:gap-2 gap-1">
+          <h2 className="font-semibold sm:text-base text-sm">Password</h2>
+          <div className="flex flex-row relative items-center">
+            <input
+              type="password"
+              placeholder="Enter your password"
+              name="password"
+              value={input.password}
+              onChange={handleChange}
+              className={`sm:p-2 w-full sm:px-11 focus:outline-none focus:ring-0 rounded-md sm:border-2 sm:text-lg
+              p-1 border-1 text-sm px-8 light:text-light-text dark:text-dark-text light:border-light-border
+              dark:border-dark-border dark:bg-dark-input-bg dark:focus:border-dark-focus light:focus:border-light-focus
+              ${error.password ? "light:border-light-error dark:border-dark-error" : ""}`}
+            />
+
+            <LockIcon
+              sx={{ fontSize: { xs: 18, sm: 26, md: 26 } }}
+              className="absolute light:text-light-text dark:text-dark-text sm:left-2 left-1"
+            />
+          </div>
+        </div>
 
         {error.password && (
-          <div className="flex gap-1 items-center text-red-600 dark:text-red-400">
+          <div className="flex gap-1 items-center light:text-light-error dark:text-dark-error sm:text-base text-sm">
             <DangerousIcon fontSize="small" />
             <span>{error.password}</span>
           </div>
@@ -245,36 +296,55 @@ export default function Register() {
           status={passwordDropdown}
         />
 
-        <input
-          type="password"
-          placeholder="Confirm your password"
-          name="confirmPassword"
-          value={input.confirmPassword}
-          onChange={handleChange}
-          className={`text-light-text dark:text-dark-text focus:outline-none focus:ring-0 border 
-          border-light-border dark:border-dark-border ${error.confirmPassword ? "border-red-600 dark:border-red-400" : ""}`}
-        />
+        <div className="flex flex-col sm:gap-2 gap-1">
+          <h2 className="font-semibold sm:text-base text-sm">Confirm Password</h2>
+          <div className="flex flex-row relative items-center">
+            <input
+              type="password"
+              placeholder="Confirm you password"
+              name="confirmPassword"
+              value={input.confirmPassword}
+              onChange={handleChange}
+              className={`sm:p-2 w-full sm:px-11 focus:outline-none focus:ring-0 rounded-md sm:border-2 sm:text-lg
+              p-1 border-1 text-sm px-8 light:text-light-text dark:text-dark-text light:border-light-border
+              dark:border-dark-border dark:bg-dark-input-bg dark:focus:border-dark-focus light:focus:border-light-focus
+              ${error.confirmPassword ? "light:border-light-error dark:border-dark-error" : ""}`}
+            />
+
+            <LockIcon
+              sx={{ fontSize: { xs: 18, sm: 26, md: 26 } }}
+              className="absolute light:text-light-text dark:text-dark-text sm:left-2 left-1"
+            />
+          </div>
+        </div>
 
         {error.confirmPassword && (
-          <div className="flex gap-1 items-center text-red-600 dark:text-red-400">
+          <div className="flex gap-1 items-center light:text-light-error dark:text-dark-error sm:text-base text-sm">
             <DangerousIcon fontSize="small" />
             <span>{error.confirmPassword}</span>
           </div>
         )}
 
-        <button type="submit">register button</button>
-
-        <div className="flex gap-1">
-          <p>Already have an account?</p>
-          <Link
-            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 
-            underline transition-colors"
-            to="/login"
-          >
-            Sign in
-          </Link>
-        </div>
+        <button
+          type="submit"
+          className="cursor-pointer font-bold sm:p-3 p-1 rounded-md duration-300 sm:text-base text-sm
+          light:bg-light-accent light:hover:bg-light-hover light:active:bg-light-active
+          dark:bg-dark-accent dark:hover:bg-dark-hover dark:active:bg-dark-active"
+        >
+          Register
+        </button>
       </form>
+
+      <div className="flex gap-1 font-semibold sm:text-base text-sm">
+        <p>Already have an account?</p>
+        <Link
+          className="text-blue-600 light:hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 
+          underline transition-colors"
+          to="/login"
+        >
+          Sign in
+        </Link>
+      </div>
     </div>
   );
 }

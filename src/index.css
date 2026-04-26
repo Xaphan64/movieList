@@ -1,19 +1,40 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant light (&:where(.light, .light *));
 
 @theme {
   /* light mode */
-  --color-light-bg: #ffffff; /* background */
-  --color-light-text: #1a1a1a; /* primary text */
-  --color-light-sec-text: #555555; /* secondary text */
-  --color-light-border: #dddddd; /* borders/dividers */
-  --color-light-accent: #3b82f6; /* buttons, links, highlights */
+  --color-light-bg: #eaf2ff; /* background */
+  --color-light-text: #1e2a3a; /* primary text */
+  --color-light-sec-text: #526074; /* secondary text */
+  --color-light-border: #cdd9ee; /* borders, dividers */
+  --color-light-accent: #d6d6d6; /* buttons */
+  --color-light-hover: #c4c4c4; /* hover */
+  --color-light-focus: #6b7280; /* focus */
+  --color-light-active: #b8b8b8; /* active */
+  --color-light-error: #d92d20; /* border error and error */
 
   /* dark mode */
   --color-dark-bg: #121212; /* background */
   --color-dark-text: #e0e0e0; /* primary text */
   --color-dark-sec-text: #b0b0b0; /* secondary text */
-  --color-dark-border: #444444; /* borders/divisions */
-  --color-dark-accent: #888888; /* buttons, links, icons, highlights */
+  --color-dark-border: #444444; /* borders, divisions */
+  --color-dark-accent: #343434; /* buttons */
+  --color-dark-hover: #3f3f3f; /* hover */
+  --color-dark-focus: #a1a1a1; /* focus  */
+  --color-dark-active: #2a2a2a; /* active */
+  --color-dark-error: #f97066; /* border error and error */
+}
+
+/* remove date icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+/* handle scroll bar */
+html {
+  overflow-y: scroll;
+  scrollbar-width: thin;
 }
