@@ -12,6 +12,7 @@ import Layout from "./layouts/MainLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MainPage from "./pages/MainPage";
+import PrivateRoutes from "./config/PrivateRoutes";
 
 // CONFIGURATION
 function App() {
@@ -30,10 +31,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<MainPage />} />
+          <Route element={<PrivateRoutes />}>
+            <Route index element={<MainPage />} />
+          </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
+
+        <Route path="*" element={<h1>error message (de facut)</h1>} />
       </Routes>
     </BrowserRouter>
   );

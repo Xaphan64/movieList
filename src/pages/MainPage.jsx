@@ -3,7 +3,7 @@
 // STYLES
 
 // LIBRARIES
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // MISC
 
@@ -16,12 +16,18 @@ export default function MainPage() {
   // API REQUESTS
 
   // LIBRARY CONSTANTS
+  const navigate = useNavigate();
 
   // STATE CONSTANTS
 
   // LIFE CYCLE
 
   // EVENT HANDLERS
+  const handleLogout = () => {
+    sessionStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
     <div>
       Main page - to be implented later
@@ -41,6 +47,10 @@ export default function MainPage() {
         >
           Sign in
         </Link>
+
+        <button type="button" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </div>
   );
