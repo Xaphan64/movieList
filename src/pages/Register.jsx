@@ -166,7 +166,11 @@ export default function Register() {
     <div className="flex flex-col items-center gap-4">
       <h1 className="sm:text-2xl text-xl font-bold">Create your Movielyst account</h1>
 
-      <form className="flex flex-col sm:gap-2 gap-1" autoComplete="off" onSubmit={handleRegister}>
+      <form
+        className="flex flex-col sm:gap-2 gap-1 max-w-[420px] w-full"
+        autoComplete="off"
+        onSubmit={handleRegister}
+      >
         <div className="flex flex-col sm:gap-2 gap-1">
           <h2 className="font-semibold sm:text-base text-sm">Username</h2>
           <div className="flex flex-row relative items-center">

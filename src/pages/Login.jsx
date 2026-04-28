@@ -36,21 +36,63 @@ export default function Login() {
   function handleLogin(e) {
     e.preventDefault();
 
-    //if email or password does not match with the one in localStorage show error
-    if (
+    // errors object
+    const newError = {
+      username: "",
+      email: "",
+      incorrect: "",
+    };
+
+    // // email empty throw error
+    // if (input.email.trim() === "") {
+    //   newError.email = "Email address is empty!";
+    // } else if (
+    //   input.email !== localStorage.getItem("Email", input.email) ||
+    //   input.password !== localStorage.getItem("Password", input.password)
+    // ) {
+    //   newError.incorrect = "Incorrect email or password";
+    // }
+    // // password empty throw error
+    // if (input.password.trim() === "") {
+    //   newError.password = "Password field is empty!";
+    // }
+    // // if email or password does not match with the one in localStorage show error
+    // else if (
+    //   input.email !== localStorage.getItem("Email", input.email) ||
+    //   input.password !== localStorage.getItem("Password", input.password)
+    // ) {
+    //   newError.incorrect = "Incorrect email or password";
+    // }
+
+    // email & password empty throw error
+    if (input.email.trim() === "" && input.password.trim() === "") {
+      newError.email = "Email address is empty!";
+      newError.password = "Password field is empty!";
+    }
+    // email empty throw error
+    else if (input.email.trim() === "") {
+      newError.email = "Email address is empty!";
+    }
+    // password empty throw error
+    else if (input.password.trim() === "") {
+      newError.password = "Password field is empty!";
+    }
+    // email & password are not the ones in the local storage throw error
+    else if (
       input.email !== localStorage.getItem("Email", input.email) ||
       input.password !== localStorage.getItem("Password", input.password)
     ) {
-      console.log(`password or email incorrect`);
-      setError("Incorrect email or password");
+      newError.incorrect = "Incorrect email or password";
     }
 
-    //if both conditions are met login (navigate to main page & create a token)
+    // set the error
+    setError(newError);
+
+    // if both conditions are met login (navigate to main page & create a token)
     if (
       input.email === localStorage.getItem("Email", input.email) &&
       input.password === localStorage.getItem("Password", input.password)
     ) {
-      console.log("login successfull");
       navigate("/");
       sessionStorage.setItem("token", token);
     }
@@ -66,13 +108,24 @@ export default function Login() {
       // use name as a key
       [name]: value,
     }));
+
+    // remove error when typing into input
+    setError((prev) => ({
+      ...prev,
+      [name]: "",
+      incorrect: "",
+    }));
   }
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <h1 className="sm:text-2xl text-xl font-bold">Login to Movielyst </h1>
+      <h1 className="sm:text-2xl text-xl font-bold">Login to Movielyst</h1>
 
-      <form className="flex flex-col sm:gap-2 gap-1" autoComplete="off" onSubmit={handleLogin}>
+      <form
+        className="flex flex-col sm:gap-2 gap-1 max-w-[420px] w-full"
+        autoComplete="off"
+        onSubmit={handleLogin}
+      >
         <div className="flex flex-col sm:gap-2 gap-1">
           <h2 className="font-semibold sm:text-base text-sm">Email</h2>
           <div className="flex flex-row relative items-center">
@@ -85,7 +138,8 @@ export default function Login() {
               className={`sm:p-2 w-full sm:px-11 focus:outline-none focus:ring-0 rounded-md sm:border-2 sm:text-lg
               p-1 border-1 text-sm px-8 light:text-light-text dark:text-dark-text light:border-light-border
               dark:border-dark-border dark:bg-dark-input-bg dark:focus:border-dark-focus light:focus:border-light-focus
-              ${error ? "light:border-light-error dark:border-dark-error" : ""}`}
+              ${error.email ? "light:border-light-error dark:border-dark-error" : ""}
+              ${error.incorrect ? "light:border-light-error dark:border-dark-error" : ""}`}
             />
 
             <EmailIcon
@@ -93,6 +147,13 @@ export default function Login() {
               className="absolute light:text-light-text dark:text-dark-text sm:left-2 left-1"
             />
           </div>
+
+          {error.email && (
+            <div className="flex gap-1 items-center light:text-light-error dark:text-dark-error sm:text-base text-sm">
+              <DangerousIcon fontSize="small" />
+              <span>{error.email}</span>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col sm:gap-2 gap-1">
@@ -104,10 +165,11 @@ export default function Login() {
               name="password"
               value={input.password}
               onChange={handleChange}
-              className={`sm:p-2 w-full sm:px-11 focus:outline-none focus:ring-0 rounded-md sm:border-2 sm:text-lg
+              className={`sm:p-2 sm:min-w-[420px] w-full sm:px-11 focus:outline-none focus:ring-0 rounded-md sm:border-2 sm:text-lg
               p-1 border-1 text-sm px-8 light:text-light-text dark:text-dark-text light:border-light-border
               dark:border-dark-border dark:bg-dark-input-bg dark:focus:border-dark-focus light:focus:border-light-focus
-              ${error ? "light:border-light-error dark:border-dark-error" : ""}`}
+              ${error.password ? "light:border-light-error dark:border-dark-error" : ""}  
+              ${error.incorrect ? "light:border-light-error dark:border-dark-error" : ""}`}
             />
 
             <LockIcon
@@ -117,10 +179,17 @@ export default function Login() {
           </div>
         </div>
 
-        {error && (
+        {error.password && (
           <div className="flex gap-1 items-center light:text-light-error dark:text-dark-error sm:text-base text-sm">
             <DangerousIcon fontSize="small" />
-            <span>{error}</span>
+            <span>{error.password}</span>
+          </div>
+        )}
+
+        {error.incorrect && (
+          <div className="flex gap-1 items-center light:text-light-error dark:text-dark-error sm:text-base text-sm">
+            <DangerousIcon fontSize="small" />
+            <span>{error.incorrect}</span>
           </div>
         )}
 
