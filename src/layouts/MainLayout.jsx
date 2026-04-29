@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 // MISC
+import { movieApp } from "../config/config";
 
 // COMPONENTS
 
@@ -41,7 +42,9 @@ export default function Layout() {
         light:bg-light-bg light:text-light-text dark:bg-dark-bg dark:text-dark-text"
       >
         <div className="flex flex-row md:justify-around items-center justify-between">
-          <Link to="/">Movielyst</Link>
+          <Link to="/" className="font-semibold">
+            {movieApp.name}
+          </Link>
           <button
             type="button"
             onClick={handleNightMode}

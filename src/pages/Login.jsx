@@ -10,6 +10,7 @@ import { useId, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // MISC
+import { movieApp } from "../config/config";
 
 // COMPONENTS
 
@@ -42,27 +43,6 @@ export default function Login() {
       email: "",
       incorrect: "",
     };
-
-    // // email empty throw error
-    // if (input.email.trim() === "") {
-    //   newError.email = "Email address is empty!";
-    // } else if (
-    //   input.email !== localStorage.getItem("Email", input.email) ||
-    //   input.password !== localStorage.getItem("Password", input.password)
-    // ) {
-    //   newError.incorrect = "Incorrect email or password";
-    // }
-    // // password empty throw error
-    // if (input.password.trim() === "") {
-    //   newError.password = "Password field is empty!";
-    // }
-    // // if email or password does not match with the one in localStorage show error
-    // else if (
-    //   input.email !== localStorage.getItem("Email", input.email) ||
-    //   input.password !== localStorage.getItem("Password", input.password)
-    // ) {
-    //   newError.incorrect = "Incorrect email or password";
-    // }
 
     // email & password empty throw error
     if (input.email.trim() === "" && input.password.trim() === "") {
@@ -119,7 +99,7 @@ export default function Login() {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <h1 className="sm:text-2xl text-xl font-bold">Login to Movielyst</h1>
+      <h1 className="sm:text-2xl text-xl font-bold">Login to {movieApp.name}</h1>
 
       <form
         className="flex flex-col sm:gap-2 gap-1 max-w-[420px] w-full"

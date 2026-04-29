@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MainPage from "./pages/MainPage";
 import PrivateRoutes from "./config/PrivateRoutes";
+import ErrorPage from "./pages/ErrorPage";
 
 // CONFIGURATION
 function App() {
@@ -36,9 +37,8 @@ function App() {
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="*" element={<ErrorPage />} />
         </Route>
-
-        <Route path="*" element={<h1>error message (de facut)</h1>} />
       </Routes>
     </BrowserRouter>
   );

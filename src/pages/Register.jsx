@@ -14,10 +14,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // MISC
+import { movieApp } from "../config/config";
 
 // COMPONENTS
 import InputChecker from "../components/InputChecker";
-import { passwordRules, usernameRules } from "../components/inputRules";
+import { passwordRules, usernameRules } from "../config/inputRules";
 
 // CONFIGURATION
 export default function Register() {
@@ -164,7 +165,7 @@ export default function Register() {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <h1 className="sm:text-2xl text-xl font-bold">Create your Movielyst account</h1>
+      <h1 className="sm:text-2xl text-xl font-bold">Create your {movieApp.name} account</h1>
 
       <form
         className="flex flex-col sm:gap-2 gap-1 max-w-[420px] w-full"
