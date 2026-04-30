@@ -44,6 +44,7 @@ export default function Layout() {
         <div className="flex flex-row md:justify-around items-center justify-between">
           <Link to="/" className="font-semibold">
             {movieApp.name}
+            {/* This is the react header component */}
           </Link>
           <button
             type="button"
