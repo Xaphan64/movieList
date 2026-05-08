@@ -14,6 +14,7 @@ import Register from "./pages/Register";
 import MainPage from "./pages/MainPage";
 import PrivateRoutes from "./config/PrivateRoutes";
 import ErrorPage from "./pages/ErrorPage";
+import MovieDetails from "./components/MovieDetails";
 
 // CONFIGURATION
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route element={<PrivateRoutes />}>
             <Route index element={<MainPage />} />
+            <Route path="/movie/:movie_id" element={<MovieDetails />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

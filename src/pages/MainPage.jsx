@@ -3,36 +3,85 @@
 // STYLES
 
 // LIBRARIES
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // MISC
 
 // COMPONENTS
+import MovieCard from "../components/MovieCard";
+import { Access_key } from "../config/config";
 
 // CONFIGURATION
 export default function MainPage() {
   // PROPERTIES
 
   // API REQUESTS
+  const fetchPopular = async () => {
+    try {
+      // fetch the API
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/movie/popular?api_key=${Access_key}&page=2`,
+      );
 
+      console.log(response.data);
+      console.log(response.data.results);
+      setMovies(response.data.results);
+    } catch (err) {
+      console.log("Error fetching popular data:", err);
+    }
+  };
+
+  const fetchGenre = async () => {
+    try {
+      // fetch the API
+      const response = await axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${Access_key}`);
+
+      setGenres(response.data.genres);
+    } catch (err) {
+      console.log("Error fetching genre data:", err);
+    }
+  };
   // LIBRARY CONSTANTS
   const navigate = useNavigate();
 
   // STATE CONSTANTS
+  const [movies, setMovies] = useState([]);
+  const [genres, setGenres] = useState([]);
 
   // LIFE CYCLE
+  useEffect(() => {
+    fetchPopular();
+    fetchGenre();
+  }, []);
 
   // EVENT HANDLERS
-  const handleLogout = () => {
+  function handleLogout() {
     sessionStorage.removeItem("token");
     navigate("/login");
-  };
+  }
+
+  function handleGenreNames(ids) {
+    return ids.map((id) => {
+      const genre = genres.find((g) => g.id === id);
+      return genre?.name;
+    });
+  }
 
   return (
     <div>
-      {/* Main page - to be implented later */}
+      <div>
+        <div>list with popular movies:</div>
+
+        <div className="flex flex-col gap-2">
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} handleGenre={handleGenreNames} />
+          ))}
+        </div>
+      </div>
       <div className="flex flex-col">
-        {/* <Link
+        <Link
           className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 
             underline transition-colors"
           to="/register"
@@ -50,47 +99,8 @@ export default function MainPage() {
 
         <button type="button" onClick={handleLogout}>
           Logout
-        </button> */}
-
-        <MainContent />
-
-        <Footer />
+        </button>
       </div>
     </div>
   );
 }
-
-export const MainContent = () => {
-  return (
-    <div className="flex flex-col items-center">
-      <img className="h-auto w-150" src="https://www.svgrepo.com/show/355190/reactjs.svg" alt="react-image" />
-
-      <p className="sm:w-300 text-center">
-        React (also known as React.js or ReactJS) is a free and open-source front-end JavaScript library that
-        aims to make building user interfaces based on components more "seamless". It is maintained by Meta
-        (formerly Facebook) and a community of individual developers and companies. According to the 2025 Stack
-        Overflow Developer Survey, React is one of the most commonly used web technologies. React can be used to
-        develop single-page, mobile, or server-rendered applications with frameworks like Next.js and React
-        Router. Because React is only concerned with the user interface and rendering components to the DOM,
-        React applications often rely on libraries for routing and other client-side functionality. A key
-        advantage of React is that it only re-renders those parts of the page that have changed, avoiding
-        unnecessary re-rendering of unchanged DOM elements. React is used by an estimated 6% of all websites.
-      </p>
-    </div>
-  );
-};
-
-export const Footer = () => {
-  return (
-    <div className="flex justify-center gap-1 sm:p-10 sm:flex-row flex-col text-center p-5">
-      <p>For more info regaring React you can check the</p>
-      <a
-        className="text-blue-600 light:hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 
-          underline transition-colors"
-        href="https://en.wikipedia.org/wiki/React_(software)"
-      >
-        React Wikipedia Page
-      </a>
-    </div>
-  );
-};
