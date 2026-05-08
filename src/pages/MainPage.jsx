@@ -22,7 +22,7 @@ export default function MainPage() {
     try {
       // fetch the API
       const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${Access_key}&page=2`,
+        `https://api.themoviedb.org/3/movie/popular?api_key=${Access_key}&page=${page}`,
       );
 
       console.log(response.data);
@@ -49,12 +49,13 @@ export default function MainPage() {
   // STATE CONSTANTS
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [page, setPage] = useState(1);
 
   // LIFE CYCLE
   useEffect(() => {
     fetchPopular();
     fetchGenre();
-  }, []);
+  });
 
   // EVENT HANDLERS
   function handleLogout() {
@@ -71,19 +72,10 @@ export default function MainPage() {
 
   return (
     <div>
-      <div>
-        <div>list with popular movies:</div>
-
-        <div className="flex flex-col gap-2">
-          {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} handleGenre={handleGenreNames} />
-          ))}
-        </div>
-      </div>
-      <div className="flex flex-col">
+      <div className="flex gap-2">
         <Link
           className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 
-            underline transition-colors"
+        underline transition-colors"
           to="/register"
         >
           Register
@@ -91,16 +83,44 @@ export default function MainPage() {
 
         <Link
           className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 
-            underline transition-colors"
+        underline transition-colors"
           to="/login"
         >
           Sign in
         </Link>
-
         <button type="button" onClick={handleLogout}>
           Logout
         </button>
       </div>
+
+      <div className="flex gap-2">
+        {/* de schimbat cand ca la inceput apare elemente, de facut sa apara si 1, 2, 3 dar grayed out ? 
+        sau cand schimbi tabul sa te duca sus pe pagina (cand o sa fie mutate butoanele jos) */}
+        {page > 1 && <button onClick={() => setPage(page - 1)}>Previous</button>}
+
+        {page > 2 && <button onClick={() => setPage(page - 2)}>{page - 2}</button>}
+
+        {page > 1 && <button onClick={() => setPage(page - 1)}>{page - 1}</button>}
+
+        <span className="text-dark-error font-bold">{page}</span>
+
+        <button onClick={() => setPage(page + 1)}>{page + 1}</button>
+
+        <button onClick={() => setPage(page + 2)}>{page + 2}</button>
+
+        <button onClick={() => setPage(page + 1)}>next</button>
+      </div>
+
+      <div>
+        <div>Popular movies</div>
+
+        <div className="flex flex-col gap-2">
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} handleGenre={handleGenreNames} />
+          ))}
+        </div>
+      </div>
+      <div className="flex flex-col"></div>
     </div>
   );
 }

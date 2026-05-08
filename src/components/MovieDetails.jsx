@@ -38,7 +38,7 @@ export default function MovieDetails() {
   // LIFE CYCLE
   useEffect(() => {
     fetchDetails();
-  }, []);
+  });
   // EVENT HANDLERS
   return (
     <div>
