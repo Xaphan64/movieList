@@ -18,17 +18,6 @@ export default function MovieDetails() {
   const { movie_id } = useParams();
 
   // API REQUESTS
-  const fetchDetails = async () => {
-    try {
-      // fetch the API
-      const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${Access_key}`);
-
-      console.log(response.data);
-      setMovie(response.data);
-    } catch (err) {
-      console.log("Error fetching popular data:", err);
-    }
-  };
 
   // LIBRARY CONSTANTS
 
@@ -37,9 +26,26 @@ export default function MovieDetails() {
 
   // LIFE CYCLE
   useEffect(() => {
-    fetchDetails();
-  });
+    const fetchDetails = async () => {
+      try {
+        // fetch the API
+        const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${Access_key}`);
+
+        console.log(response.data);
+        setMovie(response.data);
+        // get errors
+      } catch (err) {
+        console.log("Error fetching popular data:", err);
+      }
+    };
+
+    // run fuction only there is a movie id
+    if (movie_id) fetchDetails();
+    // avoid multiple re-renders
+  }, [movie_id]);
+
   // EVENT HANDLERS
+
   return (
     <div>
       <div>{`${movie.original_title} (${movie.release_date?.slice(0, 4)})`}</div>

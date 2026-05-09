@@ -41,19 +41,24 @@ export default function Layout() {
         className="layout flex flex-col w-full min-h-screen p-2 duration-450 
         light:bg-light-bg light:text-light-text dark:bg-dark-bg dark:text-dark-text"
       >
-        <div className="flex flex-row md:justify-around items-center justify-between">
+        <div className="flex md:justify-around items-center justify-between">
           <Link to="/" className="font-semibold">
             {movieApp.name}
-            {/* This is the react header component */}
           </Link>
-          <button
-            type="button"
-            onClick={handleNightMode}
-            className="flex self-end p-2 text-2xl cursor-pointer transition-colors duration-300 rounded 
+
+          <input type="text" placeholder="Search for a movie..." />
+
+          <div className="relative border w-24">
+            <button className="absolute right-0 top-1/2 -translate-y-1/2">Profile</button>
+            <button
+              type="button"
+              onClick={handleNightMode}
+              className="flex self-end p-2 text-2xl cursor-pointer transition-colors duration-300 rounded 
             light:hover:bg-light-border dark:hover:bg-dark-border"
-          >
-            {nightMode ? <LightModeIcon /> : <DarkModeIcon />}
-          </button>
+            >
+              {nightMode ? <LightModeIcon /> : <DarkModeIcon />}
+            </button>
+          </div>
         </div>
 
         <Outlet />

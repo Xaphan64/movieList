@@ -12,27 +12,13 @@ import { Link, useNavigate } from "react-router-dom";
 // COMPONENTS
 import MovieCard from "../components/MovieCard";
 import { Access_key } from "../config/config";
+import PageNumber from "../components/PageNumber";
 
 // CONFIGURATION
 export default function MainPage() {
   // PROPERTIES
 
   // API REQUESTS
-  const fetchPopular = async () => {
-    try {
-      // fetch the API
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${Access_key}&page=${page}`,
-      );
-
-      console.log(response.data);
-      console.log(response.data.results);
-      setMovies(response.data.results);
-    } catch (err) {
-      console.log("Error fetching popular data:", err);
-    }
-  };
-
   const fetchGenre = async () => {
     try {
       // fetch the API
@@ -53,9 +39,25 @@ export default function MainPage() {
 
   // LIFE CYCLE
   useEffect(() => {
+    const fetchPopular = async () => {
+      try {
+        // fetch the API
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/movie/popular?api_key=${Access_key}&page=${page}`,
+        );
+
+        console.log(response.data);
+        setMovies(response.data.results);
+        // get errors
+      } catch (err) {
+        console.log("Error fetching popular data:", err);
+      }
+    };
+
     fetchPopular();
     fetchGenre();
-  });
+    // avoid multiple re-renders
+  }, [page]);
 
   // EVENT HANDLERS
   function handleLogout() {
@@ -72,7 +74,7 @@ export default function MainPage() {
 
   return (
     <div>
-      <div className="flex gap-2">
+      {/* <div className="flex gap-2">
         <Link
           className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 
         underline transition-colors"
@@ -91,25 +93,7 @@ export default function MainPage() {
         <button type="button" onClick={handleLogout}>
           Logout
         </button>
-      </div>
-
-      <div className="flex gap-2">
-        {/* de schimbat cand ca la inceput apare elemente, de facut sa apara si 1, 2, 3 dar grayed out ? 
-        sau cand schimbi tabul sa te duca sus pe pagina (cand o sa fie mutate butoanele jos) */}
-        {page > 1 && <button onClick={() => setPage(page - 1)}>Previous</button>}
-
-        {page > 2 && <button onClick={() => setPage(page - 2)}>{page - 2}</button>}
-
-        {page > 1 && <button onClick={() => setPage(page - 1)}>{page - 1}</button>}
-
-        <span className="text-dark-error font-bold">{page}</span>
-
-        <button onClick={() => setPage(page + 1)}>{page + 1}</button>
-
-        <button onClick={() => setPage(page + 2)}>{page + 2}</button>
-
-        <button onClick={() => setPage(page + 1)}>next</button>
-      </div>
+      </div> */}
 
       <div>
         <div>Popular movies</div>
@@ -119,8 +103,9 @@ export default function MainPage() {
             <MovieCard key={movie.id} movie={movie} handleGenre={handleGenreNames} />
           ))}
         </div>
+
+        <PageNumber page={page} setPage={setPage} />
       </div>
-      <div className="flex flex-col"></div>
     </div>
   );
 }
