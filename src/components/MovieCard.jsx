@@ -23,7 +23,7 @@ export default function MovieCard({ movie, handleGenre }) {
 
   // EVENT HANDLERS
   return (
-    <div key={movie.id} className="flex flex-row gap-1" onClick={() => navigate(`movie/${movie.id}`)}>
+    <div key={movie.id} className="flex flex-row gap-1 border" onClick={() => navigate(`/movie/${movie.id}`)}>
       <img
         src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
         style={{ width: "10%", height: "10%" }}

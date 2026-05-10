@@ -1,15 +1,17 @@
 // ASSETS
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 // STYLES
 
 // LIBRARIES
-import { useContext, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 // MISC
 import { AuthContext, movieApp } from "../config/config";
+import ProfileDropdown from "../components/ProfileDropdown";
 
 // COMPONENTS
 
@@ -20,16 +22,34 @@ export default function Layout() {
   // API REQUESTS
 
   // LIBRARY CONSTANTS
-  const navigate = useNavigate();
-  const { token, logout } = useContext(AuthContext);
+  const location = useLocation();
+  const isAuth = location.pathname === "/login" || location.pathname === "/register";
+  const dropdownRef = useRef(null);
 
   // STATE CONSTANTS
+  const [profileDropdown, setProfileDropdown] = useState(false);
   const [nightMode, setNightMode] = useState(() => {
     // get the default theme from local storage
     return localStorage.getItem("theme") === "dark";
   });
 
   // LIFE CYCLE
+  useEffect(() => {
+    function handleClick(event) {
+      // if clicked outside close the modal
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setProfileDropdown(false);
+      }
+    }
+
+    // on click run the function to close the modal
+    document.addEventListener("mousedown", handleClick);
+
+    // cleanup after close
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, []);
 
   // EVENT HANDLERS
   function handleNightMode() {
@@ -40,33 +60,35 @@ export default function Layout() {
     localStorage.setItem("theme", mode ? "dark" : "light");
   }
 
-  function handleLogout() {
-    logout(token);
-    navigate("/login");
-  }
-
   return (
     <div className={nightMode ? "dark" : "light"}>
       <div
         className="layout flex flex-col w-full min-h-screen p-2 duration-450 
         light:bg-light-bg light:text-light-text dark:bg-dark-bg dark:text-dark-text"
       >
-        <div className="flex md:justify-around items-center justify-between">
+        <div className="flex md:justify-evenly items-center justify-between">
           <Link to="/" className="font-semibold">
             {movieApp.name}
           </Link>
 
-          {token && <input type="text" placeholder="Search for a movie..." />}
+          <input
+            type="text"
+            placeholder="Search for a movie..."
+            className={`${isAuth ? "invisible" : "visible"} border`}
+          />
 
-          <div className="relative border w-24">
-            {token && (
-              <>
-                <button className="absolute right-0 top-1/2 -translate-y-1/2">Profile</button>
-                <button type="button" onClick={handleLogout}>
-                  Logout
-                </button>
-              </>
-            )}
+          <div className="flex gap-2">
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setProfileDropdown((prev) => !prev)}
+                className={`${isAuth ? "invisible" : "visible"} flex self-end p-2 text-2xl cursor-pointer transition-colors duration-300 rounded 
+              light:hover:bg-light-border dark:hover:bg-dark-border`}
+              >
+                <AccountCircleIcon />
+              </button>
+
+              {profileDropdown && <ProfileDropdown setProfileDropdown={setProfileDropdown} />}
+            </div>
 
             <button
               type="button"

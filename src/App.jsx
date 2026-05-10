@@ -16,6 +16,7 @@ import PrivateRoutes from "./config/PrivateRoutes";
 import ErrorPage from "./pages/ErrorPage";
 import MovieDetails from "./components/MovieDetails";
 import AuthenticationProvider from "./config/AuthenticationProvider";
+import Watchlist from "./pages/Watchlist";
 
 // CONFIGURATION
 function App() {
@@ -38,6 +39,7 @@ function App() {
             <Route element={<PrivateRoutes />}>
               <Route index element={<MainPage />} />
               <Route path="/movie/:movie_id" element={<MovieDetails />} />
+              <Route path="/watchlist" element={<Watchlist />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
