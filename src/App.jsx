@@ -15,6 +15,7 @@ import MainPage from "./pages/MainPage";
 import PrivateRoutes from "./config/PrivateRoutes";
 import ErrorPage from "./pages/ErrorPage";
 import MovieDetails from "./components/MovieDetails";
+import AuthenticationProvider from "./config/AuthenticationProvider";
 
 // CONFIGURATION
 function App() {
@@ -30,19 +31,21 @@ function App() {
 
   // EVENT HANDLERS
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route element={<PrivateRoutes />}>
-            <Route index element={<MainPage />} />
-            <Route path="/movie/:movie_id" element={<MovieDetails />} />
+    <AuthenticationProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route element={<PrivateRoutes />}>
+              <Route index element={<MainPage />} />
+              <Route path="/movie/:movie_id" element={<MovieDetails />} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="*" element={<ErrorPage />} />
           </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </AuthenticationProvider>
   );
 }
 

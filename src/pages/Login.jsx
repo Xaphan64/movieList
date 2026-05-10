@@ -6,11 +6,11 @@ import LockIcon from "@mui/icons-material/Lock";
 // STYLES
 
 // LIBRARIES
-import { useId, useState } from "react";
+import { useContext, useId, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // MISC
-import { movieApp } from "../config/config";
+import { AuthContext, movieApp } from "../config/config";
 
 // COMPONENTS
 
@@ -23,6 +23,7 @@ export default function Login() {
   // LIBRARY CONSTANTS
   const navigate = useNavigate();
   const token = useId();
+  const { login } = useContext(AuthContext);
 
   // STATE CONSTANTS
   const [error, setError] = useState("");
@@ -74,7 +75,7 @@ export default function Login() {
       input.password === localStorage.getItem("Password", input.password)
     ) {
       navigate("/");
-      sessionStorage.setItem("token", token);
+      login(token);
     }
   }
 

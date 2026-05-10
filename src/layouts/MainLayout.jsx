@@ -5,11 +5,11 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 // STYLES
 
 // LIBRARIES
-import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 // MISC
-import { movieApp } from "../config/config";
+import { AuthContext, movieApp } from "../config/config";
 
 // COMPONENTS
 
@@ -20,6 +20,8 @@ export default function Layout() {
   // API REQUESTS
 
   // LIBRARY CONSTANTS
+  const navigate = useNavigate();
+  const { token, logout } = useContext(AuthContext);
 
   // STATE CONSTANTS
   const [nightMode, setNightMode] = useState(() => {
@@ -27,12 +29,20 @@ export default function Layout() {
     return localStorage.getItem("theme") === "dark";
   });
 
+  // LIFE CYCLE
+
+  // EVENT HANDLERS
   function handleNightMode() {
     // toggle nightmode on/off
     const mode = !nightMode;
     setNightMode(mode);
     // save mode to local storage
     localStorage.setItem("theme", mode ? "dark" : "light");
+  }
+
+  function handleLogout() {
+    logout(token);
+    navigate("/login");
   }
 
   return (
@@ -46,10 +56,18 @@ export default function Layout() {
             {movieApp.name}
           </Link>
 
-          <input type="text" placeholder="Search for a movie..." />
+          {token && <input type="text" placeholder="Search for a movie..." />}
 
           <div className="relative border w-24">
-            <button className="absolute right-0 top-1/2 -translate-y-1/2">Profile</button>
+            {token && (
+              <>
+                <button className="absolute right-0 top-1/2 -translate-y-1/2">Profile</button>
+                <button type="button" onClick={handleLogout}>
+                  Logout
+                </button>
+              </>
+            )}
+
             <button
               type="button"
               onClick={handleNightMode}

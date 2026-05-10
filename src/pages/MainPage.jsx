@@ -5,7 +5,7 @@
 // LIBRARIES
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // MISC
 
@@ -30,7 +30,6 @@ export default function MainPage() {
     }
   };
   // LIBRARY CONSTANTS
-  const navigate = useNavigate();
 
   // STATE CONSTANTS
   const [movies, setMovies] = useState([]);
@@ -60,10 +59,6 @@ export default function MainPage() {
   }, [page]);
 
   // EVENT HANDLERS
-  function handleLogout() {
-    sessionStorage.removeItem("token");
-    navigate("/login");
-  }
 
   function handleGenreNames(ids) {
     return ids.map((id) => {
@@ -74,7 +69,7 @@ export default function MainPage() {
 
   return (
     <div>
-      {/* <div className="flex gap-2">
+      <div className="flex gap-2">
         <Link
           className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 
         underline transition-colors"
@@ -90,10 +85,7 @@ export default function MainPage() {
         >
           Sign in
         </Link>
-        <button type="button" onClick={handleLogout}>
-          Logout
-        </button>
-      </div> */}
+      </div>
 
       <div>
         <div>Popular movies</div>
