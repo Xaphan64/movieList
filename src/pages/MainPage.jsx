@@ -34,12 +34,15 @@ export default function MainPage() {
   // STATE CONSTANTS
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
 
   // LIFE CYCLE
   useEffect(() => {
     const fetchPopular = async () => {
       try {
+        //
+        setIsLoading(true);
         // fetch the API
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/popular?api_key=${Access_key}&page=${page}`,
@@ -50,6 +53,8 @@ export default function MainPage() {
         // get errors
       } catch (err) {
         console.log("Error fetching popular data:", err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -90,11 +95,15 @@ export default function MainPage() {
       <div>
         <div>Popular movies</div>
 
-        <div className="flex flex-col gap-2">
-          {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} handleGenre={handleGenreNames} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {movies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} handleGenre={handleGenreNames} />
+            ))}
+          </div>
+        )}
 
         <PageNumber page={page} setPage={setPage} />
       </div>
