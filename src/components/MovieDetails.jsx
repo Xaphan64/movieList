@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { Access_key } from "../config/config";
 import { useNavigate, useParams } from "react-router-dom";
 import MovieCard from "./MovieCard";
+import Spinner from "./Spinner";
 
 // CONFIGURATION
 export default function MovieDetails() {
@@ -26,11 +27,18 @@ export default function MovieDetails() {
   // STATE CONSTANTS
   const [movie, setMovie] = useState([]);
   const [recommended, setRecommended] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   // LIFE CYCLE
   useEffect(() => {
     const fetchDetails = async () => {
       try {
+        // show spinner
+        setIsLoading(true);
+
+        // spinner testing (to remove later)
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         // fetch movie details API
         const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${Access_key}`);
 
@@ -39,11 +47,20 @@ export default function MovieDetails() {
         // get errors
       } catch (err) {
         console.log("Error fetching popular data:", err);
+      } finally {
+        // remove spinner
+        setIsLoading(false);
       }
     };
 
     const fetchRecommended = async () => {
       try {
+        // show spinner
+        setIsLoading(true);
+
+        // spinner testing (to remove later)
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         // fetch recommended movies API
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/${movie_id}/recommendations?api_key=${Access_key}`,
@@ -54,6 +71,9 @@ export default function MovieDetails() {
         // get errors
       } catch (err) {
         console.log("Error fetching popular data:", err);
+      } finally {
+        // remove spinner
+        setIsLoading(false);
       }
     };
 
@@ -68,29 +88,35 @@ export default function MovieDetails() {
   // EVENT HANDLERS
   return (
     <div>
-      <div>{`${movie.original_title} (${movie.release_date?.slice(0, 4)})`}</div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <div>{`${movie.original_title} (${movie.release_date?.slice(0, 4)})`}</div>
 
-      <img
-        src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-        style={{ width: "50%", height: "auto" }}
-      />
-      <div>{movie.homepage}</div>
+          <img
+            src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+            style={{ width: "50%", height: "auto" }}
+          />
+          <div>{movie.homepage}</div>
 
-      <div>
-        <h1>Similar movies</h1>
+          <div>
+            <h1>Similar movies</h1>
 
-        <div className="flex gap-2">
-          {recommended.map((movie) => (
-            <div className="w-full border" onClick={() => navigate(`/movie/${movie.id}`)}>
-              <img
-                src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                style={{ width: "40%", height: "auto" }}
-              />
-              <div>{movie.title}</div>
+            <div className="flex gap-2">
+              {recommended.map((movie) => (
+                <div key={movie.id} className="w-full border" onClick={() => navigate(`/movie/${movie.id}`)}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                    style={{ width: "40%", height: "auto" }}
+                  />
+                  <div>{movie.title}</div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

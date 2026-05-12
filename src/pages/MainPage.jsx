@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import MovieCard from "../components/MovieCard";
 import { Access_key } from "../config/config";
 import PageNumber from "../components/PageNumber";
+import Spinner from "../components/Spinner";
 
 // CONFIGURATION
 export default function MainPage() {
@@ -41,8 +42,12 @@ export default function MainPage() {
   useEffect(() => {
     const fetchPopular = async () => {
       try {
-        //
+        // show spinner
         setIsLoading(true);
+
+        // spinner testing (to remove later)
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         // fetch the API
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/popular?api_key=${Access_key}&page=${page}`,
@@ -54,6 +59,7 @@ export default function MainPage() {
       } catch (err) {
         console.log("Error fetching popular data:", err);
       } finally {
+        // remove spinner
         setIsLoading(false);
       }
     };
@@ -92,21 +98,21 @@ export default function MainPage() {
         </Link>
       </div>
 
-      <div>
-        <div>Popular movies</div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div>
+          <div>Popular movies</div>
 
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
           <div className="flex flex-col gap-2">
             {movies.map((movie) => (
               <MovieCard key={movie.id} movie={movie} handleGenre={handleGenreNames} />
             ))}
           </div>
-        )}
 
-        <PageNumber page={page} setPage={setPage} />
-      </div>
+          <PageNumber page={page} setPage={setPage} />
+        </div>
+      )}
     </div>
   );
 }
