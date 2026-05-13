@@ -10,9 +10,10 @@ import { useEffect, useState } from "react";
 
 // COMPONENTS
 import { Access_key } from "../config/config";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import MovieCard from "./MovieCard";
 import Spinner from "./Spinner";
+import RecommendedCard from "./RecommendedCard";
 
 // CONFIGURATION
 export default function MovieDetails() {
@@ -22,7 +23,6 @@ export default function MovieDetails() {
   // API REQUESTS
 
   // LIBRARY CONSTANTS
-  const navigate = useNavigate();
 
   // STATE CONSTANTS
   const [movie, setMovie] = useState([]);
@@ -105,13 +105,7 @@ export default function MovieDetails() {
 
             <div className="flex gap-2">
               {recommended.map((movie) => (
-                <div key={movie.id} className="w-full border" onClick={() => navigate(`/movie/${movie.id}`)}>
-                  <img
-                    src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                    style={{ width: "40%", height: "auto" }}
-                  />
-                  <div>{movie.title}</div>
-                </div>
+                <RecommendedCard movie={movie} />
               ))}
             </div>
           </div>
