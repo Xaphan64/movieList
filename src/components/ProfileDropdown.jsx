@@ -3,7 +3,9 @@
 // STYLES
 
 // LIBRARIES
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../config/config";
 
 // MISC
 
@@ -18,6 +20,7 @@ export default function ProfileDropdown() {
   // LIBRARY CONSTANTS
   const navigate = useNavigate();
   const username = localStorage.getItem("Username");
+  const { logout } = useContext(AuthContext);
 
   // STATE CONSTANTS
 
@@ -26,7 +29,8 @@ export default function ProfileDropdown() {
   // EVENT HANDLERS
   function handleLogout() {
     // remove auth token
-    sessionStorage.removeItem("token");
+    // sessionStorage.removeItem("token");
+    logout();
     // redirect to login page
     navigate("/login");
   }

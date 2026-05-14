@@ -7,11 +7,13 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 // LIBRARIES
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // MISC
-import { AuthContext, movieApp } from "../config/config";
+import { Access_key, AuthContext, movieApp } from "../config/config";
 import ProfileDropdown from "../components/ProfileDropdown";
+import MainPage from "../pages/MainPage";
 
 // COMPONENTS
 
@@ -23,16 +25,21 @@ export default function Layout() {
 
   // LIBRARY CONSTANTS
   const location = useLocation();
+  const nagivate = useNavigate();
   const isAuth = location.pathname === "/login" || location.pathname === "/register";
+  const isMainPage = location.pathname === "/";
   const dropdownRef = useRef(null);
 
   // STATE CONSTANTS
   const { search, setSearch } = useContext(AuthContext);
+  const [searchResults, setSearchResults] = useState([]);
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [nightMode, setNightMode] = useState(() => {
     // get the default theme from local storage
     return localStorage.getItem("theme") === "dark";
   });
+
+  const showResults = !isMainPage && search.trim() && searchResults.length > 0;
 
   // LIFE CYCLE
   useEffect(() => {
@@ -51,6 +58,41 @@ export default function Layout() {
       document.removeEventListener("mousedown", handleClick);
     };
   }, []);
+
+  useEffect(() => {
+    // do nothing on input if search is empty or in main page
+    if (!search.trim() || isMainPage) return;
+
+    const fetchSearch = async () => {
+      // use a timer to debounce
+      const timer = setTimeout(async () => {
+        try {
+          const res = await axios.get(
+            `https://api.themoviedb.org/3/search/movie?api_key=${Access_key}&query=${search}`,
+          );
+
+          // get only the 1st 5 results
+          setSearchResults(res.data.results.slice(0, 5));
+        } catch (err) {
+          console.log(err);
+        }
+      }, 400);
+
+      return () => clearTimeout(timer);
+    };
+
+    // remove search results dropdown from main page
+    if (!isMainPage) {
+      fetchSearch();
+    }
+  }, [search, isMainPage]);
+
+  useEffect(() => {
+    // clear input on page change
+    setSearch("");
+    setSearchResults([]);
+    setProfileDropdown(false);
+  }, [location.pathname, setSearch]);
 
   // EVENT HANDLERS
   function handleNightMode() {
@@ -72,13 +114,29 @@ export default function Layout() {
             {movieApp.name}
           </Link>
 
-          <input
-            type="text"
-            placeholder="Search movie..."
-            className={`${isAuth ? "invisible" : "visible"} border`}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search movie..."
+              className={`${isAuth ? "invisible" : "visible"} border`}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+
+            {showResults > 0 && (
+              <div className="absolute top-full left-0 w-full border shadow z-50">
+                {searchResults.map((movie) => (
+                  <div
+                    key={movie.id}
+                    className="p-2 cursor-pointer hover:bg-gray-100"
+                    onClick={() => nagivate(`/movie/${movie.id}`)}
+                  >
+                    {movie.title}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
           <div className="flex gap-2">
             <div className="relative" ref={dropdownRef}>

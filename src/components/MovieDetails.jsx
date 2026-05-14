@@ -4,12 +4,12 @@
 
 // LIBRARIES
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // MISC
 
 // COMPONENTS
-import { Access_key } from "../config/config";
+import { Access_key, AuthContext } from "../config/config";
 import { useParams } from "react-router-dom";
 import MovieCard from "./MovieCard";
 import Spinner from "./Spinner";
@@ -28,6 +28,7 @@ export default function MovieDetails() {
   const [movie, setMovie] = useState([]);
   const [recommended, setRecommended] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { toggleWatchlist, isInWatchlist } = useContext(AuthContext);
 
   // LIFE CYCLE
   useEffect(() => {
@@ -99,6 +100,10 @@ export default function MovieDetails() {
             style={{ width: "50%", height: "auto" }}
           />
           <div>{movie.homepage}</div>
+
+          <button className="z-10 dark:hover:bg-dark-hover" onClick={() => toggleWatchlist(movie)}>
+            {isInWatchlist(movie.id) ? "Remove from watchlist" : "Add to watchlist"}
+          </button>
 
           <div>
             <h1>Similar movies</h1>
