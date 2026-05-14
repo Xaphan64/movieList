@@ -105,7 +105,7 @@ export default function MovieDetails() {
 
             <div className="flex gap-2">
               {recommended.map((movie) => (
-                <RecommendedCard movie={movie} />
+                <RecommendedCard key={movie.id} movie={movie} />
               ))}
             </div>
           </div>

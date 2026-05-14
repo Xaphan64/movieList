@@ -20,6 +20,7 @@ export default function AuthenticationProvider({ children }) {
 
   // STATE CONSTANTS
   const [token, setToken] = useState(sessionStorage.getItem("token"));
+  const [search, setSearch] = useState("");
 
   // LIFE CYCLE
 
@@ -34,5 +35,7 @@ export default function AuthenticationProvider({ children }) {
     setToken(null);
   }
 
-  return <AuthContext.Provider value={{ token, login, logout }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ token, login, logout, search, setSearch }}>{children}</AuthContext.Provider>
+  );
 }

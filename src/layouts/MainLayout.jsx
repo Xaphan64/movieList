@@ -6,7 +6,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 // STYLES
 
 // LIBRARIES
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 // MISC
@@ -27,6 +27,7 @@ export default function Layout() {
   const dropdownRef = useRef(null);
 
   // STATE CONSTANTS
+  const { search, setSearch } = useContext(AuthContext);
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [nightMode, setNightMode] = useState(() => {
     // get the default theme from local storage
@@ -73,8 +74,10 @@ export default function Layout() {
 
           <input
             type="text"
-            placeholder="Search for a movie..."
+            placeholder="Search movie..."
             className={`${isAuth ? "invisible" : "visible"} border`}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
 
           <div className="flex gap-2">

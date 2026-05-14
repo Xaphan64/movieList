@@ -4,14 +4,14 @@
 
 // LIBRARIES
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 // MISC
 
 // COMPONENTS
 import MovieCard from "../components/MovieCard";
-import { Access_key } from "../config/config";
+import { Access_key, AuthContext } from "../config/config";
 import PageNumber from "../components/PageNumber";
 import Spinner from "../components/Spinner";
 
@@ -33,25 +33,35 @@ export default function MainPage() {
   // LIBRARY CONSTANTS
 
   // STATE CONSTANTS
+  const { search } = useContext(AuthContext);
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
 
   // LIFE CYCLE
+
   useEffect(() => {
     const fetchPopular = async () => {
       try {
         // show spinner
         setIsLoading(true);
 
+        // define empty url
+        let url = "";
+
         // spinner testing (to remove later)
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        // fetch the API
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/popular?api_key=${Access_key}&page=${page}`,
-        );
+        // fetch the API by page or search
+        if (search.trim()) {
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${Access_key}&query=${search}`;
+        } else {
+          url = `https://api.themoviedb.org/3/movie/popular?api_key=${Access_key}&page=${page}`;
+        }
+
+        // get the proper url
+        const response = await axios.get(url);
 
         console.log(response.data);
         setMovies(response.data.results);
@@ -64,10 +74,16 @@ export default function MainPage() {
       }
     };
 
-    fetchPopular();
-    fetchGenre();
+    // debouncer to reduce api calls
+    const timer = setTimeout(() => {
+      fetchPopular();
+      fetchGenre();
+    }, 400);
+
+    return () => clearTimeout(timer);
+
     // avoid multiple re-renders
-  }, [page]);
+  }, [page, search]);
 
   // EVENT HANDLERS
 
@@ -110,7 +126,7 @@ export default function MainPage() {
             ))}
           </div>
 
-          <PageNumber page={page} setPage={setPage} />
+          {!search && <PageNumber page={page} setPage={setPage} />}
         </div>
       )}
     </div>
