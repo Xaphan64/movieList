@@ -88,10 +88,16 @@ export default function Layout() {
   }, [search, isMainPage]);
 
   useEffect(() => {
+    // close modal on path change
+    function handleCloseModal() {
+      setProfileDropdown(false);
+    }
+
     // clear input on page change
     setSearch("");
-    setSearchResults([]);
-    setProfileDropdown(false);
+    handleCloseModal();
+    // setProfileDropdown(false);
+    // setSearchResults([]);
   }, [location.pathname, setSearch]);
 
   // EVENT HANDLERS

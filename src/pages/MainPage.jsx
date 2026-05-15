@@ -20,29 +20,20 @@ export default function MainPage() {
   // PROPERTIES
 
   // API REQUESTS
-  const fetchGenre = async () => {
-    try {
-      // fetch the API
-      const response = await axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${Access_key}`);
 
-      setGenres(response.data.genres);
-    } catch (err) {
-      console.log("Error fetching genre data:", err);
-    }
-  };
   // LIBRARY CONSTANTS
 
   // STATE CONSTANTS
   const { search } = useContext(AuthContext);
   const [movies, setMovies] = useState([]);
-  const [genres, setGenres] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [category, setCategory] = useState("popular");
 
   // LIFE CYCLE
 
   useEffect(() => {
-    const fetchPopular = async () => {
+    const fetchMovies = async () => {
       try {
         // show spinner
         setIsLoading(true);
@@ -57,7 +48,7 @@ export default function MainPage() {
         if (search.trim()) {
           url = `https://api.themoviedb.org/3/search/movie?api_key=${Access_key}&query=${search}`;
         } else {
-          url = `https://api.themoviedb.org/3/movie/popular?api_key=${Access_key}&page=${page}`;
+          url = `https://api.themoviedb.org/3/movie/${category}?api_key=${Access_key}&page=${page}`;
         }
 
         // get the proper url
@@ -74,55 +65,61 @@ export default function MainPage() {
       }
     };
 
-    // debouncer to reduce api calls
-    const timer = setTimeout(() => {
-      fetchPopular();
-      fetchGenre();
-    }, 400);
+    // debouncer on search to reduce api calls
+    if (search.trim()) {
+      const timer = setTimeout(() => {
+        fetchMovies();
+      }, 400);
 
-    return () => clearTimeout(timer);
+      return () => clearTimeout(timer);
+    }
 
+    // no debouncer when not searching for a movie
+    fetchMovies();
     // avoid multiple re-renders
-  }, [page, search]);
+  }, [page, search, category]);
 
   // EVENT HANDLERS
-
-  function handleGenreNames(ids) {
-    return ids.map((id) => {
-      const genre = genres.find((g) => g.id === id);
-      return genre?.name;
-    });
-  }
-
   return (
     <div>
-      <div className="flex gap-2">
-        <Link
-          className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 
-        underline transition-colors"
-          to="/register"
-        >
-          Register
-        </Link>
-
-        <Link
-          className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 
-        underline transition-colors"
-          to="/login"
-        >
-          Sign in
-        </Link>
-      </div>
-
       {isLoading ? (
         <Spinner />
       ) : (
         <div>
-          <div>Popular movies</div>
+          <div className={`flex gap-3 p-2 w-full items-center justify-center ${search.trim() && "invisible"}`}>
+            <button
+              className={`border rounded-md px-10 dark:border-light-border light:border-dark-border 
+                ${category === "popular" && "dark:bg-dark-accent light:bg-light-accent"} `}
+              onClick={() => setCategory("popular")}
+            >
+              Popular
+            </button>
+            <button
+              className={`border rounded-md px-10 dark:border-light-border light:border-dark-border 
+                ${category === "now_playing" && "dark:bg-dark-accent light:bg-light-accent"} `}
+              onClick={() => setCategory("now_playing")}
+            >
+              Now playing
+            </button>
+            <button
+              className={`border rounded-md px-10 dark:border-light-border light:border-dark-border 
+                ${category === "top_rated" && "dark:bg-dark-accent light:bg-light-accent"} `}
+              onClick={() => setCategory("top_rated")}
+            >
+              Top Rated
+            </button>
+            <button
+              className={`border rounded-md px-10 dark:border-light-border light:border-dark-border 
+                ${category === "upcoming" && "dark:bg-dark-accent light:bg-light-accent"} `}
+              onClick={() => setCategory("upcoming")}
+            >
+              Upcomming
+            </button>
+          </div>
 
           <div className="flex flex-col gap-2">
             {movies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} handleGenre={handleGenreNames} />
+              <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
 

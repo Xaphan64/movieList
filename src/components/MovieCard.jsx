@@ -1,4 +1,5 @@
 // ASSETS
+import StarIcon from "@mui/icons-material/Star";
 
 // STYLES
 
@@ -12,7 +13,7 @@ import { AuthContext } from "../config/config";
 // COMPONENTS
 
 // CONFIGURATION
-export default function MovieCard({ movie, handleGenre }) {
+export default function MovieCard({ movie }) {
   // PROPERTIES
 
   // API REQUESTS
@@ -27,18 +28,21 @@ export default function MovieCard({ movie, handleGenre }) {
   // EVENT HANDLERS
 
   return (
-    <div>
-      <div key={movie.id} className="flex flex-row gap-1 border" onClick={() => navigate(`/movie/${movie.id}`)}>
+    <div className="border flex flex-col">
+      <div key={movie.id} className="flex flex-row gap-1" onClick={() => navigate(`/movie/${movie.id}`)}>
         <img
           src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
           style={{ width: "10%", height: "10%" }}
           alt={movie.title}
         />
-
-        <div>Name: {movie.title}</div>
-        <div>Genre: {handleGenre(movie.genre_ids).join(" | ")}</div>
-
-        <div>ID: {movie.id}</div>
+        <div>
+          <p>{movie.title}</p>
+          <p>Year: {movie.release_date.slice(0, 4)}</p>
+          <div className="flex">
+            Rating: <StarIcon />
+            <p>{movie.vote_average.toFixed(1)}</p>
+          </div>
+        </div>
       </div>
       <button className="z-10 dark:hover:bg-dark-hover" onClick={() => toggleWatchlist(movie)}>
         {isInWatchlist(movie.id) ? "Remove from watchlist" : "Add to watchlist"}

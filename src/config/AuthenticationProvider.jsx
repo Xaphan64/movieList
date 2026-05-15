@@ -26,8 +26,13 @@ export default function AuthenticationProvider({ children }) {
 
   // LIFE CYCLE
   useEffect(() => {
+    function handleSetWatchlist(value) {
+      setWatchlist(value);
+    }
+
     if (!username) {
-      setWatchlist([]);
+      // setWatchlist([]);
+      handleSetWatchlist([]);
       return;
     }
 
@@ -35,7 +40,8 @@ export default function AuthenticationProvider({ children }) {
     const saved = JSON.parse(localStorage.getItem(`watchlist_${username}`)) || [];
 
     // set the data
-    setWatchlist(saved);
+    // setWatchlist(saved);
+    handleSetWatchlist(saved);
   }, [username]);
 
   useEffect(() => {
@@ -46,11 +52,13 @@ export default function AuthenticationProvider({ children }) {
 
   // EVENT HANDLERS
   function login(newToken) {
+    // set a new token in local storage
     sessionStorage.setItem("token", newToken);
     setToken(newToken);
   }
 
   function logout() {
+    // remove token from local storage
     sessionStorage.removeItem("token");
     setToken(null);
   }
@@ -59,29 +67,35 @@ export default function AuthenticationProvider({ children }) {
     // get token from local storage
     // const token = sessionStorage.getItem("token");
 
-    // if no token return empty array
+    // if no username return empty array
     if (!username) return [];
 
-    // get the local storage data from token or initial empty array
+    // get the local storage data from username or initial empty array
     return JSON.parse(localStorage.getItem(`watchlist_${username}`)) || [];
   }
 
   function toggleWatchlist(movie) {
+    // check if the movie already exists in watchlist
     const exists = watchlist.some((item) => item.id === movie.id);
 
     if (exists) {
+      // remove movie by id
       setWatchlist(watchlist.filter((item) => item.id !== movie.id));
     } else {
+      // or add the movie into the watchlist
       setWatchlist([...watchlist, movie]);
     }
   }
 
   function isInWatchlist(movieId) {
+    // check if the movie already exists in watchlist
     return watchlist.some((movie) => movie.id === movieId);
   }
 
   return (
-    <AuthContext.Provider value={{ token, login, logout, search, setSearch, toggleWatchlist, isInWatchlist }}>
+    <AuthContext.Provider
+      value={{ token, login, logout, search, setSearch, toggleWatchlist, isInWatchlist, watchlist }}
+    >
       {children}
     </AuthContext.Provider>
   );
