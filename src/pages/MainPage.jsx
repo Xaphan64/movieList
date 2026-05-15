@@ -20,18 +20,28 @@ export default function MainPage() {
   // PROPERTIES
 
   // API REQUESTS
+  const fetchGenre = async () => {
+    try {
+      // fetch the API
+      const response = await axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${Access_key}`);
+
+      setGenres(response.data.genres);
+    } catch (err) {
+      console.log("Error fetching genre data:", err);
+    }
+  };
 
   // LIBRARY CONSTANTS
 
   // STATE CONSTANTS
-  const { search } = useContext(AuthContext);
+  const { search, notification } = useContext(AuthContext);
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [genres, setGenres] = useState([]);
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("popular");
 
   // LIFE CYCLE
-
   useEffect(() => {
     const fetchMovies = async () => {
       try {
@@ -42,7 +52,7 @@ export default function MainPage() {
         let url = "";
 
         // spinner testing (to remove later)
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
 
         // fetch the API by page or search
         if (search.trim()) {
@@ -69,6 +79,7 @@ export default function MainPage() {
     if (search.trim()) {
       const timer = setTimeout(() => {
         fetchMovies();
+        fetchGenre();
       }, 400);
 
       return () => clearTimeout(timer);
@@ -76,19 +87,31 @@ export default function MainPage() {
 
     // no debouncer when not searching for a movie
     fetchMovies();
+    fetchGenre();
     // avoid multiple re-renders
   }, [page, search, category]);
 
   // EVENT HANDLERS
+  function handleGenreNames(ids) {
+    // map the ids
+    return ids.map((id) => {
+      // find the genre id
+      const genre = genres.find((g) => g.id === id);
+      // return the name
+      return genre?.name;
+    });
+  }
+
   return (
-    <div>
+    <>
       {isLoading ? (
         <Spinner />
       ) : (
         <div>
+          {notification && <div className="fixed top-5 right-5 rounded font-semibold">{notification}</div>}
           <div className={`flex gap-3 p-2 w-full items-center justify-center ${search.trim() && "invisible"}`}>
             <button
-              className={`border rounded-md px-10 dark:border-light-border light:border-dark-border 
+              className={`border rounded-md px-10 cursor-pointer dark:border-light-border light:border-dark-border 
                 ${category === "popular" && "dark:bg-dark-accent light:bg-light-accent"} `}
               onClick={() => setCategory("popular")}
             >
@@ -117,15 +140,15 @@ export default function MainPage() {
             </button>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 w-full items-center">
             {movies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
+              <MovieCard key={movie.id} movie={movie} handleGenre={handleGenreNames} />
             ))}
           </div>
 
           {!search && <PageNumber page={page} setPage={setPage} />}
         </div>
       )}
-    </div>
+    </>
   );
 }

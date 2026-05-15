@@ -23,6 +23,7 @@ export default function AuthenticationProvider({ children }) {
   const [token, setToken] = useState(sessionStorage.getItem("token"));
   const [search, setSearch] = useState("");
   const [watchlist, setWatchlist] = useState(handleInitial);
+  const [notification, setNotification] = useState("");
 
   // LIFE CYCLE
   useEffect(() => {
@@ -64,9 +65,6 @@ export default function AuthenticationProvider({ children }) {
   }
 
   function handleInitial() {
-    // get token from local storage
-    // const token = sessionStorage.getItem("token");
-
     // if no username return empty array
     if (!username) return [];
 
@@ -81,10 +79,16 @@ export default function AuthenticationProvider({ children }) {
     if (exists) {
       // remove movie by id
       setWatchlist(watchlist.filter((item) => item.id !== movie.id));
+      setNotification("Removed from watchlist");
     } else {
       // or add the movie into the watchlist
       setWatchlist([...watchlist, movie]);
+      setNotification("Added to watchlist");
     }
+
+    setTimeout(() => {
+      setNotification("");
+    }, 2000);
   }
 
   function isInWatchlist(movieId) {
@@ -94,7 +98,17 @@ export default function AuthenticationProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ token, login, logout, search, setSearch, toggleWatchlist, isInWatchlist, watchlist }}
+      value={{
+        token,
+        login,
+        logout,
+        search,
+        setSearch,
+        toggleWatchlist,
+        isInWatchlist,
+        watchlist,
+        notification,
+      }}
     >
       {children}
     </AuthContext.Provider>

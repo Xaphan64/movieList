@@ -188,7 +188,7 @@ export default function Login() {
       <div className="flex gap-1 font-semibold sm:text-base text-sm">
         <p>No account?</p>
         <Link
-          className="text-blue-600 light:hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 
+          className="light:text-blue-400 light:hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 
           underline transition-colors"
           to="/register"
         >

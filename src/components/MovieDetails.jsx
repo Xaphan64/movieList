@@ -60,7 +60,7 @@ export default function MovieDetails() {
         setIsLoading(true);
 
         // spinner testing (to remove later)
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
 
         // fetch recommended movies API
         const response = await axios.get(
