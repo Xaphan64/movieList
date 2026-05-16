@@ -124,7 +124,9 @@ export default function Layout() {
             <input
               type="text"
               placeholder="Search movie..."
-              className={`${isAuth ? "invisible" : "visible"} border`}
+              className={`${isAuth ? "invisible" : "visible"} sm:p-0 sm:min-w-[420px] w-full sm:px-3 focus:outline-none focus:ring-0 rounded-md sm:border-2 sm:text-lg
+              p-1 border-1 text-sm px-8 light:text-light-text dark:text-dark-text light:border-light-border
+              dark:border-dark-border dark:bg-dark-input-bg dark:focus:border-dark-focus light:focus:border-light-focus`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />

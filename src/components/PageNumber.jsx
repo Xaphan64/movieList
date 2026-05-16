@@ -32,20 +32,68 @@ export default function PageNumber({ page, setPage }) {
   }
 
   return (
-    <div className="flex gap-2">
-      {page > 1 && <button onClick={() => handlePage(page, "-", 1)}>Previous</button>}
+    <div className="flex gap-3 w-full justify-center p-5">
+      {page > 1 && (
+        <button
+          className="cursor-pointer font-semibold px-2 rounded-full duration-300 sm:text-base text-sm
+          light:bg-light-accent light:hover:bg-light-hover light:active:bg-light-active
+          dark:bg-dark-accent dark:hover:bg-dark-hover dark:active:bg-dark-active"
+          onClick={() => handlePage(page, "-", 1)}
+        >
+          Previous
+        </button>
+      )}
 
-      {page > 2 && <button onClick={() => handlePage(page, "-", 2)}>{page - 2}</button>}
+      {page > 2 && (
+        <button
+          className="cursor-pointer font-bold px-2 rounded-full duration-300 sm:text-base text-sm
+          light:bg-light-accent light:hover:bg-light-hover light:active:bg-light-active
+          dark:bg-dark-accent dark:hover:bg-dark-hover dark:active:bg-dark-active"
+          onClick={() => handlePage(page, "-", 2)}
+        >
+          {page - 2}
+        </button>
+      )}
 
-      {page > 1 && <button onClick={() => handlePage(page, "-", 1)}>{page - 1}</button>}
+      {page > 1 && (
+        <button
+          className="cursor-pointer font-bold px-2 rounded-full duration-300 sm:text-base text-sm
+          light:bg-light-accent light:hover:bg-light-hover light:active:bg-light-active
+          dark:bg-dark-accent dark:hover:bg-dark-hover dark:active:bg-dark-active"
+          onClick={() => handlePage(page, "-", 1)}
+        >
+          {page - 1}
+        </button>
+      )}
 
-      <span className="text-dark-error font-bold">{page}</span>
+      <span className="dark:text-blue-400 light:text-blue-600 font-bold">{page}</span>
 
-      <button onClick={() => handlePage(page, "+", 1)}>{page + 1}</button>
+      <button
+        className="cursor-pointer font-bold px-2 rounded-full duration-300 sm:text-base text-sm
+          light:bg-light-accent light:hover:bg-light-hover light:active:bg-light-active
+          dark:bg-dark-accent dark:hover:bg-dark-hover dark:active:bg-dark-active"
+        onClick={() => handlePage(page, "+", 1)}
+      >
+        {page + 1}
+      </button>
 
-      <button onClick={() => handlePage(page, "+", 2)}>{page + 2}</button>
+      <button
+        className="cursor-pointer font-bold px-2 rounded-full duration-300 sm:text-base text-sm
+          light:bg-light-accent light:hover:bg-light-hover light:active:bg-light-active
+          dark:bg-dark-accent dark:hover:bg-dark-hover dark:active:bg-dark-active"
+        onClick={() => handlePage(page, "+", 2)}
+      >
+        {page + 2}
+      </button>
 
-      <button onClick={() => handlePage(page, "+", 1)}>next</button>
+      <button
+        className="cursor-pointer font-semibold px-2 rounded-full duration-300 sm:text-base text-sm
+          light:bg-light-accent light:hover:bg-light-hover light:active:bg-light-active
+          dark:bg-dark-accent dark:hover:bg-dark-hover dark:active:bg-dark-active"
+        onClick={() => handlePage(page, "+", 1)}
+      >
+        next
+      </button>
     </div>
   );
 }

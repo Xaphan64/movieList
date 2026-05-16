@@ -31,12 +31,17 @@ export default function MovieCard({ movie, handleGenre }) {
   return (
     <div
       className="border-2 flex flex-col relative w-2/3 dark:hover:bg-dark-accent light:hover:bg-light-accent
-    dark:border-dark-active light:border-light-active"
+    dark:border-dark-active light:border-light-active rounded"
     >
       <div key={movie.id} className="flex flex-row gap-5">
         <img
-          src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-          className="w-40 h-auto cursor-pointer hover:opacity-80 border dark:border-dark-active light:border-light-active"
+          // src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+          src={`${
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/original${movie.poster_path}`
+              : "https://batleydiy.co.uk/cdn/shop/files/No_image_available_svg_0c2f2ed3-d819-428f-98a3-33e835014783.png?v=1742825567"
+          }`}
+          className="w-40 h-auto cursor-pointer rounded hover:opacity-80 border dark:border-dark-active light:border-light-active"
           onClick={() => navigate(`/movie/${movie.id}`)}
           alt={movie.title}
         />
@@ -48,11 +53,11 @@ export default function MovieCard({ movie, handleGenre }) {
             {movie.title}
           </p>
 
-          <p className="text-xl dark:text-dark-sec-text light:text-light-sec-text">
+          <p className="text-xl dark:text-dark-text light:text-light-text">
             {handleGenre(movie.genre_ids).join(" | ")}
           </p>
 
-          <p className="text-xl dark:text-dark-sec-text light:text-light-sec-text">
+          <p className="text-xl dark:text-dark-text light:text-light-text">
             {new Date(movie.release_date) < new Date()
               ? `Released in ${new Date(movie.release_date).getFullYear()}`
               : `Will be released on ${movie.release_date}`}

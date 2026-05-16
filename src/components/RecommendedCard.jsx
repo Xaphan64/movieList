@@ -24,12 +24,14 @@ export default function RecommendedCard({ movie }) {
 
   // EVENT HANDLERS
   return (
-    <div key={movie.id} className="w-full border" onClick={() => navigate(`/movie/${movie.id}`)}>
-      <img
-        src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-        style={{ width: "40%", height: "auto" }}
-      />
-      <div>{movie.title}</div>
+    <div
+      key={movie.id}
+      className="flex flex-col cursor-pointer w-60 items-center rounded-md hover:opacity-70 dark:bg-dark-accent light:bg-light-accent"
+      onClick={() => navigate(`/movie/${movie.id}`)}
+    >
+      <img src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} className="w-full h-auto rounded-t" />
+
+      <p className="text-lg dark:text-dark-text light:text-light-text py-1">{movie.title}</p>
     </div>
   );
 }

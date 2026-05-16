@@ -102,6 +102,15 @@ export default function MainPage() {
     });
   }
 
+  function handleSwitchFilter(categ) {
+    // change category page
+    if (category !== categ) {
+      setCategory(categ);
+      // reset page on category change
+      setPage(1);
+    }
+  }
+
   return (
     <>
       {isLoading ? (
@@ -113,38 +122,44 @@ export default function MainPage() {
             <button
               className={`border rounded-md px-10 cursor-pointer dark:border-light-border light:border-dark-border 
                 ${category === "popular" && "dark:bg-dark-accent light:bg-light-accent"} `}
-              onClick={() => setCategory("popular")}
+              onClick={() => handleSwitchFilter("popular")}
             >
               Popular
             </button>
             <button
-              className={`border rounded-md px-10 dark:border-light-border light:border-dark-border 
+              className={`border rounded-md px-10 cursor-pointer dark:border-light-border light:border-dark-border 
                 ${category === "now_playing" && "dark:bg-dark-accent light:bg-light-accent"} `}
-              onClick={() => setCategory("now_playing")}
+              onClick={() => handleSwitchFilter("now_playing")}
             >
               Now playing
             </button>
             <button
-              className={`border rounded-md px-10 dark:border-light-border light:border-dark-border 
+              className={`border rounded-md px-10 cursor-pointer dark:border-light-border light:border-dark-border 
                 ${category === "top_rated" && "dark:bg-dark-accent light:bg-light-accent"} `}
-              onClick={() => setCategory("top_rated")}
+              onClick={() => handleSwitchFilter("top_rated")}
             >
               Top Rated
             </button>
             <button
-              className={`border rounded-md px-10 dark:border-light-border light:border-dark-border 
+              className={`border rounded-md px-10 cursor-pointer dark:border-light-border light:border-dark-border 
                 ${category === "upcoming" && "dark:bg-dark-accent light:bg-light-accent"} `}
-              onClick={() => setCategory("upcoming")}
+              onClick={() => handleSwitchFilter("upcoming")}
             >
               Upcomming
             </button>
           </div>
 
-          <div className="flex flex-col gap-2 w-full items-center">
-            {movies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} handleGenre={handleGenreNames} />
-            ))}
-          </div>
+          {search.trim() && movies.length === 0 ? (
+            <div className="flex w-full justify-center text-lg font-semibold">
+              There are no movies with that name
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2 w-full items-center">
+              {movies.map((movie) => (
+                <MovieCard key={movie.id} movie={movie} handleGenre={handleGenreNames} />
+              ))}
+            </div>
+          )}
 
           {!search && <PageNumber page={page} setPage={setPage} />}
         </div>

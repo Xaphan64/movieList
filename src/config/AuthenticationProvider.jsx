@@ -86,6 +86,7 @@ export default function AuthenticationProvider({ children }) {
       setNotification("Added to watchlist");
     }
 
+    // remove notification after 2 sec
     setTimeout(() => {
       setNotification("");
     }, 2000);
