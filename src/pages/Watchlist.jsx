@@ -24,13 +24,21 @@ export default function Watchlist() {
 
   // EVENT HANDLERS
   return (
-    <div>
-      {watchlist.map((movie) => (
-        <div key={movie.id}>
-          <div>{movie.title} </div>
-          <button onClick={() => toggleWatchlist(movie)}>remove from watchlist</button>
+    <>
+      {watchlist.length === 0 ? (
+        <div className="w-full flex items-center justify-center p-5 text-xl font-semibold">
+          There are no movies in your watchlist
         </div>
-      ))}
-    </div>
+      ) : (
+        <div>
+          {watchlist.map((movie) => (
+            <div key={movie.id}>
+              <div>{movie.title} </div>
+              <button onClick={() => toggleWatchlist(movie)}>remove from watchlist</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </>
   );
 }

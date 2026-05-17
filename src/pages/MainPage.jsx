@@ -151,7 +151,7 @@ export default function MainPage() {
 
           {search.trim() && movies.length === 0 ? (
             <div className="flex w-full justify-center text-lg font-semibold">
-              There are no movies with that name
+              The movie that you are searching for does not exists
             </div>
           ) : (
             <div className="flex flex-col gap-2 w-full items-center">

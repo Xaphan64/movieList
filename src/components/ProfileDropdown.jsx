@@ -36,12 +36,26 @@ export default function ProfileDropdown() {
   }
 
   return (
-    <div className="flex flex-col w-30 absolute top-full left-1/2 -translate-x-1/2 mt-2 border">
-      <span>{username}</span>
-      <button type="button" onClick={() => navigate("/watchlist")}>
-        watchlist page
+    <div
+      className="flex flex-col absolute top-full left-1/2 -translate-x-1/2 mt-2 border-2 light:border-light-focus
+    dark:border-dark-focus z-20 p-2 dark:text-dark-text light:text-light-text dark:bg-dark-bg light:bg-light-bg rounded"
+    >
+      <span className="text-center p-1 pb-2 px-15 select-none">{username}</span>
+
+      <hr className="mx-1 py-1 light:border-light-focus dark:border-dark-focus" />
+
+      <button
+        className="dark:hover:bg-dark-hover light:hover:bg-light-hover p-2 text-center cursor-pointer rounded-md"
+        type="button"
+        onClick={() => navigate("/watchlist")}
+      >
+        Watchlist
       </button>
-      <button type="button" onClick={handleLogout}>
+      <button
+        className="dark:hover:bg-dark-hover light:hover:bg-light-hover p-2 text-center cursor-pointer rounded-md"
+        type="button"
+        onClick={handleLogout}
+      >
         Logout
       </button>
     </div>

@@ -31,7 +31,9 @@ export default function RecommendedCard({ movie }) {
     >
       <img src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} className="w-full h-auto rounded-t" />
 
-      <p className="text-lg dark:text-dark-text light:text-light-text py-1">{movie.title}</p>
+      <p className="text-lg text-center dark:text-dark-text light:text-light-text py-1 flex items-center h-full p-2">
+        {movie.title}
+      </p>
     </div>
   );
 }

@@ -34,6 +34,7 @@ export default function Layout() {
   const { search, setSearch } = useContext(AuthContext);
   const [searchResults, setSearchResults] = useState([]);
   const [profileDropdown, setProfileDropdown] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [nightMode, setNightMode] = useState(() => {
     // get the default theme from local storage
     return localStorage.getItem("theme") === "dark";
@@ -120,7 +121,7 @@ export default function Layout() {
             {movieApp.name}
           </Link>
 
-          <div className="relative">
+          <div className="relative py-1">
             <input
               type="text"
               placeholder="Search movie..."
@@ -129,14 +130,20 @@ export default function Layout() {
               dark:border-dark-border dark:bg-dark-input-bg dark:focus:border-dark-focus light:focus:border-light-focus`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setTimeout(() => setIsFocused(false), 100)}
             />
 
-            {showResults > 0 && (
-              <div className="absolute top-full left-0 w-full border shadow z-50">
+            {isFocused && showResults > 0 && (
+              <div
+                className="absolute top-full left-0 w-full border-2 border light:border-light-focus
+              dark:border-dark-focus z-50 rounded-md p-1 dark:bg-dark-bg light:bg-light-bg"
+              >
                 {searchResults.map((movie) => (
                   <div
                     key={movie.id}
-                    className="p-2 cursor-pointer hover:bg-gray-100"
+                    className="p-2 cursor-pointer dark:text-dark-text light:text-light-text dark:bg-dark-bg 
+                    light:bg-light-bg dark:hover:bg-dark-hover light:hover:bg-light-hover rounded-md"
                     onClick={() => nagivate(`/movie/${movie.id}`)}
                   >
                     {movie.title}
