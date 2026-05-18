@@ -7,6 +7,8 @@ import { useContext } from "react";
 
 // MISC
 import { AuthContext } from "../config/config";
+import RecommendedCard from "../components/RecommendedCard";
+import WatchlistCard from "../components/WatchlistCard";
 
 // COMPONENTS
 
@@ -17,8 +19,9 @@ export default function Watchlist() {
   // API REQUESTS
 
   // LIBRARY CONSTANTS
-  const { watchlist, toggleWatchlist } = useContext(AuthContext);
+
   // STATE CONSTANTS
+  const { watchlist, toggleWatchlist } = useContext(AuthContext);
 
   // LIFE CYCLE
 
@@ -26,16 +29,16 @@ export default function Watchlist() {
   return (
     <>
       {watchlist.length === 0 ? (
-        <div className="w-full flex items-center justify-center p-5 text-xl font-semibold">
+        <div
+          className="w-full flex items-center justify-center p-5 text-xl font-semibold dark:text-dark-text
+        light:text-light-text"
+        >
           There are no movies in your watchlist
         </div>
       ) : (
-        <div>
+        <div className="flex flex-col gap-2 w-full items-center pt-5">
           {watchlist.map((movie) => (
-            <div key={movie.id}>
-              <div>{movie.title} </div>
-              <button onClick={() => toggleWatchlist(movie)}>remove from watchlist</button>
-            </div>
+            <WatchlistCard key={movie.id} movie={movie} toggleWatchlist={toggleWatchlist} />
           ))}
         </div>
       )}
