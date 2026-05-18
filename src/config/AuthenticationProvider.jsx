@@ -87,9 +87,9 @@ export default function AuthenticationProvider({ children }) {
     }
 
     // remove notification after 2 sec
-    setTimeout(() => {
-      setNotification("");
-    }, 2000);
+    // setTimeout(() => {
+    //   setNotification("");
+    // }, 2000);
   }
 
   function isInWatchlist(movieId) {

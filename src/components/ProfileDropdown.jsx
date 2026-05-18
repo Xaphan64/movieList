@@ -37,10 +37,10 @@ export default function ProfileDropdown() {
 
   return (
     <div
-      className="flex flex-col absolute top-full left-1/2 -translate-x-1/2 mt-2 border-2 light:border-light-focus
-    dark:border-dark-focus z-20 p-2 dark:text-dark-text light:text-light-text dark:bg-dark-bg light:bg-light-bg rounded"
+      className="flex flex-col absolute top-full left-1/2 -translate-x-1/2 md:mt-2 border-2 light:border-light-focus
+    dark:border-dark-focus z-20 md:p-2 p-1 dark:text-dark-text light:text-light-text dark:bg-dark-bg light:bg-light-bg rounded"
     >
-      <span className="text-center p-1 pb-2 px-15 select-none">{username}</span>
+      <span className="text-center p-1 pb-2 md:px-15 px-7 select-none">{username}</span>
 
       <hr className="mx-1 py-1 light:border-light-focus dark:border-dark-focus" />
 

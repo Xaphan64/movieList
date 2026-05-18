@@ -117,7 +117,7 @@ export default function Layout() {
         light:bg-light-bg light:text-light-text dark:bg-dark-bg dark:text-dark-text"
       >
         <div className="flex md:justify-evenly items-center justify-between">
-          <Link to="/" className="font-semibold">
+          <Link to="/" className="font-semibold md:text-base text-xs">
             {movieApp.name}
           </Link>
 
@@ -125,9 +125,10 @@ export default function Layout() {
             <input
               type="text"
               placeholder="Search movie..."
-              className={`${isAuth ? "invisible" : "visible"} sm:p-0 sm:min-w-[420px] w-full sm:px-3 focus:outline-none focus:ring-0 rounded-md sm:border-2 sm:text-lg
-              p-1 border-1 text-sm px-8 light:text-light-text dark:text-dark-text light:border-light-border
-              dark:border-dark-border dark:bg-dark-input-bg dark:focus:border-dark-focus light:focus:border-light-focus`}
+              className={`${isAuth ? "invisible" : "visible"} w-full focus:outline-none focus:ring-0 rounded-md md:border-2 md:text-lg
+              p-1 border-1 text-sm md:px-3 light:text-light-text dark:text-dark-text light:border-light-border md:p-0 md:min-w-[420px]  
+              dark:border-dark-border dark:bg-dark-input-bg dark:focus:border-dark-focus light:focus:border-light-focus
+              md:m-0 mx-1 py-0`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onFocus={() => setIsFocused(true)}
@@ -153,7 +154,7 @@ export default function Layout() {
             )}
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex md:gap-2 gap-0">
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setProfileDropdown((prev) => !prev)}

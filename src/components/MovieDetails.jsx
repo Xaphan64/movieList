@@ -91,19 +91,19 @@ export default function MovieDetails() {
 
   // EVENT HANDLERS
   return (
-    <div className="w-full flex justify-center py-10">
+    <div className="w-full flex justify-center md:py-10">
       {isLoading ? (
         <Spinner />
       ) : (
-        <div className="w-2/3 flex flex-col">
+        <div className="md:w-2/3 w-full flex flex-col">
           {notification && <div className="fixed top-5 right-5 rounded font-semibold">{notification}</div>}
 
-          <p className="text-2xl dark:text-blue-400  light:text-blue-600 ">
+          <p className="md:text-2xl dark:text-blue-400 light:text-blue-600 font-semibold text-lg">
             {movie.original_title === movie.title ? movie.title : `${movie.original_title} (${movie.title})`}
           </p>
 
-          <div className="flex justify-between">
-            <div className="flex flex-row gap-1 text-xl dark:text-dark-sec-text light:text-light-sec-text">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-row gap-1 md:text-xl dark:text-dark-sec-text light:text-light-sec-text">
               <p>{movie.release_date?.slice(0, 4)}</p> &middot;
               <p>
                 {`${movie.runtime >= 60 ? Math.floor(movie.runtime / 60) + "h" : ""} ${movie.runtime % 60}m`}
@@ -111,13 +111,13 @@ export default function MovieDetails() {
             </div>
             <div className="flex items-center">
               {movie.vote_average == 0 ? (
-                <p className="items-center text-xl dark:text-dark-sec-text light:text-light-sec-text">
+                <p className="items-center md:text-xl dark:text-dark-sec-text light:text-light-sec-text">
                   Rating not available
                 </p>
               ) : (
                 <>
                   <StarIcon className="dark:text-yellow-400 light:text-yellow-600" />
-                  <p className="items-center text-xl dark:text-dark-sec-text light:text-light-sec-text">
+                  <p className="items-center md:text-xl dark:text-dark-sec-text light:text-light-sec-text">
                     {movie.vote_average?.toFixed(1)}
                   </p>
                 </>
@@ -126,15 +126,21 @@ export default function MovieDetails() {
           </div>
 
           <div className="flex justify-center py-5">
-            <div className={`relative  h-auto ${movie.backdrop_path ? "w-11/12" : "w-1/2"}`}>
+            <div className={`relative h-auto ${movie.backdrop_path ? "w-11/12" : "w-1/2"}`}>
               <button
-                className="z-10 absolute left-3 top-3 cursor-pointer rounded-full p-1 bg-black/50"
+                className="z-10 absolute left-3 top-3 cursor-pointer rounded-full p-1 bg-black/50 flex items-center"
                 onClick={() => toggleWatchlist(movie)}
               >
                 {isInWatchlist(movie.id) ? (
-                  <BookmarkIcon className="text-blue-400 hover:text-blue-300" fontSize="large" />
+                  <BookmarkIcon
+                    className="text-blue-400 hover:text-blue-300"
+                    sx={{ fontSize: { xs: 20, sm: 28, md: 40 } }}
+                  />
                 ) : (
-                  <BookmarkBorderIcon className="text-blue-400 hover:text-blue-300" fontSize="large" />
+                  <BookmarkBorderIcon
+                    className="text-blue-400 hover:text-blue-300"
+                    sx={{ fontSize: { xs: 20, sm: 28, md: 40 } }}
+                  />
                 )}
               </button>
 
@@ -149,9 +155,14 @@ export default function MovieDetails() {
               />
             </div>
           </div>
-          <p className="text-xl py-1 dark:text-dark-text light:text-light-text">{movie.overview}</p>
+          <p className="md:text-xl md:py-1 text-sm px-1 dark:text-dark-text light:text-light-text">
+            {movie.overview}
+          </p>
 
-          <div className="flex py-1 items-center justify-between flex-row text-xl dark:text-dark-text light:text-light-text">
+          <div
+            className="flex py-1 md:items-center md:justify-between md:flex-row md:text-xl justify-start flex-col gap-1 
+          dark:text-dark-text light:text-light-text text-sm"
+          >
             {new Date(movie.release_date) < new Date()
               ? `Original release: ${movie.release_date?.split("-").reverse().join("-")}`
               : `Release date: ${movie.release_date?.split("-").reverse().join("-")}`}
@@ -166,10 +177,10 @@ export default function MovieDetails() {
             </div>
           </div>
 
-          <div className="py-10">
-            <h1 className="text-xl py-5">Similar movies</h1>
+          <div className="md:py-10">
+            <h1 className="md:text-xl md:py-5 py-2">Similar movies</h1>
 
-            <div className="flex w-full justify-between">
+            <div className="flex w-full md:justify-between md:flex-row flex-col items-center gap-1">
               {recommended.map((movie) => (
                 <RecommendedCard key={movie.id} movie={movie} />
               ))}

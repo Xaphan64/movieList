@@ -38,7 +38,6 @@ export default function WatchlistCard({ movie, toggleWatchlist }) {
         onClick={() => navigate(`/movie/${movie.id}`)}
         alt={movie.title}
       />
-      {/* </div> */}
 
       <div className="flex flex-col justify-between w-full">
         <div className="flex flex-col gap-2 pl-5">

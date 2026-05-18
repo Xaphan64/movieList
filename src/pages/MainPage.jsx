@@ -64,7 +64,6 @@ export default function MainPage() {
         // get the proper url
         const response = await axios.get(url);
 
-        console.log(response.data);
         setMovies(response.data.results);
         // get errors
       } catch (err) {
@@ -117,36 +116,45 @@ export default function MainPage() {
         <Spinner />
       ) : (
         <div>
-          {notification && <div className="fixed top-5 right-5 rounded font-semibold">{notification}</div>}
-          <div className={`flex gap-3 p-2 w-full items-center justify-center ${search.trim() && "invisible"}`}>
-            <button
-              className={`border rounded-md px-10 cursor-pointer dark:border-light-border light:border-dark-border 
+          {notification && (
+            <div className="fixed top-5 right-5 rounded font-semibold border px-2">{notification}</div>
+          )}
+          <div
+            className={`flex md:gap-3 p-2 w-full md:flex-row items-center md:justify-center gap-2 flex-col ${search.trim() && "md:invisible hidden"}`}
+          >
+            <div className="flex gap-3">
+              <button
+                className={`border rounded-md md:w-50 w-30 cursor-pointer dark:border-light-border light:border-dark-border 
                 ${category === "popular" && "dark:bg-dark-accent light:bg-light-accent"} `}
-              onClick={() => handleSwitchFilter("popular")}
-            >
-              Popular
-            </button>
-            <button
-              className={`border rounded-md px-10 cursor-pointer dark:border-light-border light:border-dark-border 
+                onClick={() => handleSwitchFilter("popular")}
+              >
+                Popular
+              </button>
+              <button
+                className={`border rounded-md md:w-50 w-30 cursor-pointer dark:border-light-border light:border-dark-border 
                 ${category === "now_playing" && "dark:bg-dark-accent light:bg-light-accent"} `}
-              onClick={() => handleSwitchFilter("now_playing")}
-            >
-              Now playing
-            </button>
-            <button
-              className={`border rounded-md px-10 cursor-pointer dark:border-light-border light:border-dark-border 
+                onClick={() => handleSwitchFilter("now_playing")}
+              >
+                Now playing
+              </button>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                className={`border rounded-md md:w-50 w-30 cursor-pointer dark:border-light-border light:border-dark-border 
                 ${category === "top_rated" && "dark:bg-dark-accent light:bg-light-accent"} `}
-              onClick={() => handleSwitchFilter("top_rated")}
-            >
-              Top Rated
-            </button>
-            <button
-              className={`border rounded-md px-10 cursor-pointer dark:border-light-border light:border-dark-border 
+                onClick={() => handleSwitchFilter("top_rated")}
+              >
+                Top Rated
+              </button>
+              <button
+                className={`border rounded-md md:w-50 w-30 cursor-pointer dark:border-light-border light:border-dark-border 
                 ${category === "upcoming" && "dark:bg-dark-accent light:bg-light-accent"} `}
-              onClick={() => handleSwitchFilter("upcoming")}
-            >
-              Upcomming
-            </button>
+                onClick={() => handleSwitchFilter("upcoming")}
+              >
+                Upcomming
+              </button>
+            </div>
           </div>
 
           {search.trim() && movies.length === 0 ? (
@@ -154,7 +162,7 @@ export default function MainPage() {
               The movie that you are searching for does not exists
             </div>
           ) : (
-            <div className="flex flex-col gap-2 w-full items-center">
+            <div className="flex flex-col gap-2 w-full md:items-center">
               {movies.map((movie) => (
                 <MovieCard key={movie.id} movie={movie} handleGenre={handleGenreNames} />
               ))}
