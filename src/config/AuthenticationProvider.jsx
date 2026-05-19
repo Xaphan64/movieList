@@ -79,17 +79,17 @@ export default function AuthenticationProvider({ children }) {
     if (exists) {
       // remove movie by id
       setWatchlist(watchlist.filter((item) => item.id !== movie.id));
-      setNotification("Removed from watchlist");
+      setNotification("Movie removed from watchlist");
     } else {
       // or add the movie into the watchlist
       setWatchlist([...watchlist, movie]);
-      setNotification("Added to watchlist");
+      setNotification("Movie added to watchlist");
     }
 
     // remove notification after 2 sec
-    // setTimeout(() => {
-    //   setNotification("");
-    // }, 2000);
+    setTimeout(() => {
+      setNotification("");
+    }, 2000);
   }
 
   function isInWatchlist(movieId) {

@@ -117,7 +117,9 @@ export default function MainPage() {
       ) : (
         <div>
           {notification && (
-            <div className="fixed top-5 right-5 rounded font-semibold border px-2">{notification}</div>
+            <div className="fixed bottom-0 left-0 w-full text-center md:py-5 py-1 z-20 border-t dark:bg-dark-border light:bg-light-border md:text-xl">
+              {notification}
+            </div>
           )}
           <div
             className={`flex md:gap-3 p-2 w-full md:flex-row items-center md:justify-center gap-2 flex-col ${search.trim() && "md:invisible hidden"}`}
