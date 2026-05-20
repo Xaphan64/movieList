@@ -68,7 +68,7 @@ export default function WatchlistCard({ movie, toggleWatchlist }) {
         </div>
         <button
           className="cursor-pointer p-2 dark:bg-dark-accent light:bg-light-accent dark:hover:bg-dark-hover 
-          light:hover:bg-light-hover text-xs"
+          light:hover:bg-light-hover md:text-base text-xs"
           onClick={() => toggleWatchlist(movie)}
         >
           Remove movie from Watchlist
