@@ -96,7 +96,14 @@ export default function MovieDetails() {
         <Spinner />
       ) : (
         <div className="md:w-2/3 w-full flex flex-col">
-          {notification && <div className="fixed top-5 right-5 rounded font-semibold">{notification}</div>}
+          {notification && (
+            <div
+              className="fixed bottom-0 left-0 md:left-1/2 md:-translate-x-1/2 md:w-1/3 w-full text-center md:py-1 py-1 z-20 md:rounded 
+              md:dark:bg-dark-border/90 md:light:bg-light-border/90 dark:bg-dark-border light:bg-light-border md:text-xl"
+            >
+              {notification}
+            </div>
+          )}
 
           <p className="md:text-2xl dark:text-blue-400 light:text-blue-600 font-semibold text-lg">
             {movie.original_title === movie.title ? movie.title : `${movie.original_title} (${movie.title})`}

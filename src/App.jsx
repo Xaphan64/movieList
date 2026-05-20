@@ -38,11 +38,11 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route element={<PrivateRoutes />}>
               <Route index element={<MainPage />} />
-              <Route path="/movie/:movie_id" element={<MovieDetails />} />
-              <Route path="/watchlist" element={<Watchlist />} />
+              <Route path="movie/:movie_id" element={<MovieDetails />} />
+              <Route path="watchlist" element={<Watchlist />} />
             </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>
         </Routes>

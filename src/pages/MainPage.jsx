@@ -117,7 +117,11 @@ export default function MainPage() {
       ) : (
         <div>
           {notification && (
-            <div className="fixed bottom-0 left-0 w-full text-center md:py-5 py-1 z-20 border-t dark:bg-dark-border light:bg-light-border md:text-xl">
+            // <div className="fixed bottom-0 left-0 w-full text-center md:py-2 py-1 z-20 border-t dark:bg-dark-border light:bg-light-border md:text-xl">
+            <div
+              className="fixed bottom-0 left-0 md:left-1/2 md:-translate-x-1/2 md:w-1/2 w-full text-center md:py-1 py-1 z-20 md:rounded 
+              md:dark:bg-dark-border/90 md:light:bg-light-border/90 dark:bg-dark-border light:bg-light-border md:text-xl"
+            >
               {notification}
             </div>
           )}
