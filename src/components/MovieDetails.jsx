@@ -46,7 +46,6 @@ export default function MovieDetails() {
         // fetch movie details API
         const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${Access_key}`);
 
-        console.log(response.data);
         setMovie(response.data);
         // get errors
       } catch (err) {
@@ -70,7 +69,6 @@ export default function MovieDetails() {
           `https://api.themoviedb.org/3/movie/${movie_id}/recommendations?api_key=${Access_key}`,
         );
 
-        console.log(response.data);
         setRecommended(response.data.results?.slice(0, 5));
         // get errors
       } catch (err) {
