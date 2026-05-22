@@ -120,7 +120,6 @@ export default function Layout() {
         <div className="flex md:justify-evenly items-center justify-between">
           <Link to="/" className="font-semibold md:text-base text-xs">
             {movieApp.name}
-            {/* <img src={logo} alt={movieApp.name} className="w-20 h-20" /> */}
           </Link>
 
           <div className="relative py-1">

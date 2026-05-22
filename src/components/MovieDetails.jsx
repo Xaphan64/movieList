@@ -173,7 +173,6 @@ export default function MovieDetails() {
               : `Release date: ${movie.release_date?.split("-").reverse().join("-")}`}
 
             <div className="flex gap-1">
-              {/* <p>{movie.genres?.length > 1 ? "Genres" : "Genre"}:</p> */}
               {movie.genres?.map((genre) => (
                 <p key={genre.id} className="border px-3 rounded-md dark:bg-dark-accent light:bg-light-accent">
                   {genre.name}

@@ -28,8 +28,6 @@ export default function ProfileDropdown() {
 
   // EVENT HANDLERS
   function handleLogout() {
-    // remove auth token
-    // sessionStorage.removeItem("token");
     logout();
     // redirect to login page
     navigate("/login");
