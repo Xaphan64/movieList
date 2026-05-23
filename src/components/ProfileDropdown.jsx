@@ -28,6 +28,7 @@ export default function ProfileDropdown() {
 
   // EVENT HANDLERS
   function handleLogout() {
+    // logout function from auth context
     logout();
     // redirect to login page
     navigate("/login");
